@@ -1,38 +1,38 @@
 // background.
-$colorBgDefault: #fff;
-$colorBgSecondary: #f6f6f4;
-$colorBgPrimary: #14191A;
-$colorBgOverlay: rgba(20,25,26,0.32);
+$color-bg-default: #fff;
+$color-bg-secondary: #f6f6f4;
+$color-bg-primary: #14191A;
+$color-bg-overlay: rgb(20 25 26 / 32%);
 
 // text.
-$colorTextPrimary: #14191A;
-$colorTextSecondary: #A8A19A;
-$colorTextContrast: #fff;
-$colorTextLink: #005BD1;
-$colorTextLinkVisited: #528FDF;
+$color-text-primary: #14191A;
+$color-text-secondary: #A8A19A;
+$color-text-contrast: #fff;
+$color-text-link: #005BD1;
+$color-text-link-visited: #528FDF;
 
 // icons.
-$colorIconPrimary: #14191A;
-$colorIconSecondary: #A8A19A;
-$colorIconContrast: #FFFFFF;
+$color-icon-primary: #14191A;
+$color-icon-secondary: #A8A19A;
+$color-icon-contrast: #FFF;
 
 // borders.
-$colorDivider: rgba(20,25,26,0.12);
-$colorBorder: rgba(20,25,26,0.12);
-$colorBorderHover: rgba(20,25,26,0.24);
-$colorBorderActive: rgba(20,25,26,0.72);
-$colorBorderFocus: rgba(20,25,26,0.24);
-$colorBorderTable: rgba(20,25,26,0.08);
-$colorBorderTimeline:rgba(20,25,26,0.04);
+$color-divider: rgb(20 25 26 / 12%);
+$color-border: rgb(20 25 26 / 12%);
+$color-border-hover: rgb(20 25 26 / 24%);
+$color-border-active: rgb(20 25 26 / 72%);
+$color-border-focus: rgb(20 25 26 / 24%);
+$color-border-table: rgb(20 25 26 / 8%);
+$color-border-timeline: rgb(20 25 26 / 4%);
 
 // functional.
-$colorSuccess: #9ACA3C;
-$colorError: #F26651;
-$colorNotify: #F26651;
-$colorWarning: #F2994A;
+$color-success: #9ACA3C;
+$color-error: #F26651;
+$color-notify: #F26651;
+$color-warning: #F2994A;
 
 // states.
-$colorStateLightHover: rgba(20,25,26,0.04);
-$colorStateLightActive: rgba(20,25,26,0.08);
-$colorStateLightFocus: rgba(20,25,26,0.08);
-$colorStateDisabled: rgba(20,25,26,0.12); 
+$color-state-light-hover: rgb(20 25 26 / 4%);
+$color-state-light-active: rgb(20 25 26 / 8%);
+$color-state-light-focus: rgb(20 25 26 / 8%);
+$color-state-disabled: rgb(20 25 26 / 12%); 
