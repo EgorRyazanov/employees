@@ -15,7 +15,8 @@
     "**/*.{js,ts,tsx}": [
       "yarn format",
       "yarn lint"
-    ]
+    ],
+    "./src/**/*.scss": "npm run stylelint"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -45,6 +46,8 @@
     "pinst": "^3.0.0",
     "prettier": "^3.0.3",
     "sass": "^1.69.5",
+    "stylelint-config-standard-scss": "^11.1.0",
+    "stylelint-scss": "^5.3.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   },
