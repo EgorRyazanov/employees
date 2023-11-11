@@ -1,0 +1,38 @@
+// background.
+$colorBgDefault: #fff;
+$colorBgSecondary: #f6f6f4;
+$colorBgPrimary: #14191A;
+$colorBgOverlay: rgba(20,25,26,0.32);
+
+// text.
+$colorTextPrimary: #14191A;
+$colorTextSecondary: #A8A19A;
+$colorTextContrast: #fff;
+$colorTextLink: #005BD1;
+$colorTextLinkVisited: #528FDF;
+
+// icons.
+$colorIconPrimary: #14191A;
+$colorIconSecondary: #A8A19A;
+$colorIconContrast: #FFFFFF;
+
+// borders.
+$colorDivider: rgba(20,25,26,0.12);
+$colorBorder: rgba(20,25,26,0.12);
+$colorBorderHover: rgba(20,25,26,0.24);
+$colorBorderActive: rgba(20,25,26,0.72);
+$colorBorderFocus: rgba(20,25,26,0.24);
+$colorBorderTable: rgba(20,25,26,0.08);
+$colorBorderTimeline:rgba(20,25,26,0.04);
+
+// functional.
+$colorSuccess: #9ACA3C;
+$colorError: #F26651;
+$colorNotify: #F26651;
+$colorWarning: #F2994A;
+
+// states.
+$colorStateLightHover: rgba(20,25,26,0.04);
+$colorStateLightActive: rgba(20,25,26,0.08);
+$colorStateLightFocus: rgba(20,25,26,0.08);
+$colorStateDisabled: rgba(20,25,26,0.12); 
