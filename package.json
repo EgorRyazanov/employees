@@ -12,7 +12,10 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "./src/**/*.ts": "npm run lint"
+    "**/*.{js,ts,tsx}": [
+      "yarn format",
+      "yarn lint"
+    ]
   },
   "dependencies": {
     "react": "^18.2.0",
