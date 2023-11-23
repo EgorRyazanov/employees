@@ -13,11 +13,22 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
     },
   },
   '& .MuiOutlinedInput-root': {
-    '& .MuiInputBase-input:hover ~ fieldset': {
-      borderColor: '#14191A3D',
+    '& .MuiInputBase-input ~ fieldset': {
+      borderColor: '#14191A1F',
     },
-    '& .MuiInputBase-input:focus ~ fieldset, & .MuiInputBase-input:active ~ fieldset': {
-      borderColor: '#14191AB8',
+    '& .MuiInputBase-input:active ~ fieldset': {
+      borderColor: '#14191ab8',
+    },
+    '& .MuiInputBase-input:hover ~ fieldset': {
+      borderColor: '#14191a3d',
+    },
+    '& .MuiInputBase-input:focus ~ fieldset': {
+      borderColor: '#14191ab8',
+    },
+  },
+  '& .MuiOutlinedInput-root:hover': {
+    '& .MuiInputBase-input:focus ~ fieldset': {
+      borderColor: '#14191ab8',
     },
   },
 }));
