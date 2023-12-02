@@ -1,18 +1,19 @@
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, IconButton, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Box, Button, FormControlLabel, IconButton, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
 
 import { typedMemo } from '../../../../utils/typedMemo';
 import { LoginFormValue, initValues, loginFormSchema } from './LoginForm.settings';
 import { TextFieldComponent } from '../../../../components/TextField';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { CheckBoxComponent } from '../../../../components/Checkbox';
 import styles from './LoginForm.module.scss';
 
 export const LoginFormComponent: FC = () => {
   const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, formState } = useForm<LoginFormValue>({
+  const { register, handleSubmit, formState, control } = useForm<LoginFormValue>({
     defaultValues: initValues,
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -21,8 +22,8 @@ export const LoginFormComponent: FC = () => {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-  const onSubmit = () => {
-    console.log('text');
+  const onSubmit = (values: LoginFormValue) => {
+    console.log(values);
   };
 
   return (
@@ -58,6 +59,18 @@ export const LoginFormComponent: FC = () => {
             }}
           />
         </Box>
+        <FormControlLabel
+          control={
+            <Controller
+              name="rememberMe"
+              control={control}
+              render={({ field: props }) => (
+                <CheckBoxComponent {...props} checked={props.value} onChange={e => props.onChange(e.target.checked)} />
+              )}
+            />
+          }
+          label={'Запомнить меня'}
+        />
       </Stack>
       <Button sx={{ width: '100%' }} type="submit" variant="contained">
         Войти
