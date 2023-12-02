@@ -1,16 +1,25 @@
-import { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, FormControlLabel, IconButton, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { FC, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import { typedMemo } from '../../../../utils/typedMemo';
 import { LoginFormValue, initValues, loginFormSchema } from './LoginForm.settings';
-import { TextFieldComponent } from '../../../../components/TextField';
-import { CheckBoxComponent } from '../../../../components/Checkbox';
+import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
 import styles from './LoginForm.module.scss';
 
-export const LoginFormComponent: FC = () => {
+const LoginFormComponent: FC = () => {
   const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState, control } = useForm<LoginFormValue>({
@@ -80,9 +89,14 @@ export const LoginFormComponent: FC = () => {
           {formState.errors?.root?.message}
         </Typography>
       )}
-      <Typography variant="body2" sx={{ textAlign: 'center' }}>
-        Если Вы забыли логин или пароль — Обратитесь в Брусника.Помощь
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography variant="body2" sx={{ textAlign: 'center', width: '50%' }}>
+          Если Вы забыли логин или пароль —{' '}
+          <Link href="mailto:help@brusnika.ru" variant="body2" sx={{ color: '#005BD1' }}>
+            Обратитесь в Брусника.Помощь
+          </Link>
+        </Typography>
+      </Box>
     </form>
   );
 };

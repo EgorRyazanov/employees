@@ -1,10 +1,10 @@
-import { FC } from 'react';
 import { Box, Container } from '@mui/material';
+import { FC } from 'react';
 
 import { typedMemo } from '../../../../utils/typedMemo';
-import { LoginFormComponent } from '../../components/LoginForm/LoginForm';
-import logoLink from '/src/assets/logo.svg';
+import { LoginForm } from '../../components/LoginForm';
 import styles from './LoginPage.module.scss';
+import logoLink from '/src/assets/logo.svg';
 
 const LoginPageComponent: FC = () => {
   return (
@@ -18,7 +18,7 @@ const LoginPageComponent: FC = () => {
       }}>
       <Box className={styles.loginContainer}>
         <img className={styles.loginLogo} src={logoLink} alt="Logo" />
-        <LoginFormComponent />
+        <LoginForm />
       </Box>
     </Container>
   );
