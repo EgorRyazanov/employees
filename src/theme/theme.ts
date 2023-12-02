@@ -46,3 +46,11 @@ export const theme = createTheme({
     },
   },
 });
+
+theme.typography.body2 = {
+  fontSize: '12px',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  lineHeight: '133%',
+  letterSpacing: '0.12px',
+};

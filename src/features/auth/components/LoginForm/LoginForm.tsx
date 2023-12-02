@@ -1,14 +1,17 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, IconButton, InputAdornment, Stack, Typography } from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
 
 import { typedMemo } from '../../../../utils/typedMemo';
 import { LoginFormValue, initValues, loginFormSchema } from './LoginForm.settings';
 import { TextFieldComponent } from '../../../../components/TextField';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import styles from './LoginForm.module.scss';
 
 export const LoginFormComponent: FC = () => {
+  const theme = useTheme();
+  const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState } = useForm<LoginFormValue>({
     defaultValues: initValues,
     mode: 'onBlur',
@@ -16,19 +19,17 @@ export const LoginFormComponent: FC = () => {
     resolver: zodResolver(loginFormSchema),
   });
 
-  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const onSubmit = () => {
-    console.log(123);
+    console.log('text');
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2} width={400}>
-        <div className="">
-          <Typography>Почта</Typography>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={2}>
+        <Box>
+          <Typography variant="body2">Почта</Typography>
           <TextFieldComponent
             fullWidth
             placeholder="Введите почту"
@@ -36,9 +37,9 @@ export const LoginFormComponent: FC = () => {
             helperText={formState.errors?.email?.message}
             {...register('email')}
           />
-        </div>
-        <div>
-          <Typography>Пароль</Typography>
+        </Box>
+        <Box>
+          <Typography variant="body2">Пароль</Typography>
           <TextFieldComponent
             fullWidth
             placeholder="Введите пароль"
@@ -49,21 +50,26 @@ export const LoginFormComponent: FC = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}>
+                  <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword}>
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               ),
             }}
           />
-        </div>
-        <Button type="submit" variant="contained">
-          Войти
-        </Button>
+        </Box>
       </Stack>
+      <Button sx={{ width: '100%' }} type="submit" variant="contained">
+        Войти
+      </Button>
+      {!!formState.errors.root && (
+        <Typography variant="body2" sx={{ textAlign: 'center', color: theme.palette.error.main }}>
+          {formState.errors?.root?.message}
+        </Typography>
+      )}
+      <Typography variant="body2" sx={{ textAlign: 'center' }}>
+        Если Вы забыли логин или пароль — Обратитесь в Брусника.Помощь
+      </Typography>
     </form>
   );
 };
