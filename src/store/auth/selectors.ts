@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import { STATUS } from '../../api/services/utils/status';
-import { TRootState } from '../index';
+import { TRootState } from '..';
 
 const root = (state: TRootState) => state.auth;
 
@@ -18,7 +18,7 @@ const selectUser = createSelector(root, data => data.user);
 
 const selectAuthErrors = createSelector(root, data => data.error);
 
-export const selectors = {
+export const authSelectors = {
   SelectIsUserFetching,
   SelectIsUserInitial,
   SelectIsUserReady,

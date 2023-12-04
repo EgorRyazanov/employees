@@ -3,4 +3,4 @@ import { reducer } from './slice';
 import { initialState } from './initial';
 import { actions } from './actions';
 
-export const Login = { initialState, actions, reducer, thunks };
+export const LoginStore = { initialState, actions, reducer, thunks };

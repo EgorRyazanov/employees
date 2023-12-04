@@ -18,15 +18,15 @@ import { typedMemo } from '../../../../utils/typedMemo';
 import { LoginFormValue, initValues, loginFormSchema } from './LoginForm.settings';
 import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { selectors } from '../../../../store/auth/selectors';
+import { authSelectors } from '../../../../store/auth/selectors';
 import { EntityValidationErrors } from '../../../../models/appError';
 import { Login } from '../../../../models/login';
-import { thunks } from '../../../../store/auth/thunks';
+import { LoginStore } from '../../../../store/auth';
 import styles from './LoginForm.module.scss';
 
 const LoginFormComponent: FC = () => {
-  const errors = useAppSelector(selectors.selectAuthErrors);
-  const isLoading = useAppSelector(selectors.SelectIsUserFetching);
+  const errors = useAppSelector(authSelectors.selectAuthErrors);
+  const isLoading = useAppSelector(authSelectors.SelectIsUserFetching);
   const dispatch = useAppDispatch();
 
   const theme = useTheme();
@@ -63,7 +63,7 @@ const LoginFormComponent: FC = () => {
   }, [errors, setValidationErrors]);
 
   const onSubmit = (values: LoginFormValue) => {
-    dispatch(thunks.login(values));
+    dispatch(LoginStore.thunks.login(values));
   };
 
   return (
