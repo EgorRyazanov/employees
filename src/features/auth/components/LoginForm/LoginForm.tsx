@@ -11,18 +11,27 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { Controller, useForm, type Path } from 'react-hook-form';
 
 import { typedMemo } from '../../../../utils/typedMemo';
 import { LoginFormValue, initValues, loginFormSchema } from './LoginForm.settings';
 import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { selectors } from '../../../../store/auth/selectors';
+import { EntityValidationErrors } from '../../../../models/appError';
+import { Login } from '../../../../models/login';
+import { thunks } from '../../../../store/auth/thunks';
 import styles from './LoginForm.module.scss';
 
 const LoginFormComponent: FC = () => {
+  const errors = useAppSelector(selectors.selectAuthErrors);
+  const isLoading = useAppSelector(selectors.SelectIsUserFetching);
+  const dispatch = useAppDispatch();
+
   const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, formState, control } = useForm<LoginFormValue>({
+  const { register, handleSubmit, formState, control, setError } = useForm<LoginFormValue>({
     defaultValues: initValues,
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -31,8 +40,30 @@ const LoginFormComponent: FC = () => {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
+  const setValidationErrors = useCallback(
+    (validationErrors: EntityValidationErrors<Login>) => {
+      for (const [field, messageOrError] of Object.entries(validationErrors)) {
+        if (field === 'non_field_errors') {
+          setError('root', { type: 'server', message: messageOrError });
+        } else {
+          setError(field as Path<Login>, {
+            type: 'server',
+            message: messageOrError,
+          });
+        }
+      }
+    },
+    [setError],
+  );
+
+  useEffect(() => {
+    if (errors != null && errors.validationData != null) {
+      setValidationErrors(errors.validationData);
+    }
+  }, [errors, setValidationErrors]);
+
   const onSubmit = (values: LoginFormValue) => {
-    console.log(values);
+    dispatch(thunks.login(values));
   };
 
   return (
@@ -81,7 +112,7 @@ const LoginFormComponent: FC = () => {
           label={'Запомнить меня'}
         />
       </Stack>
-      <Button sx={{ width: '100%' }} type="submit" variant="contained">
+      <Button disabled={isLoading} sx={{ width: '100%' }} type="submit" variant="contained">
         Войти
       </Button>
       {!!formState.errors.root && (
