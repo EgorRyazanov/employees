@@ -1,4 +1,5 @@
 @import 'fonts';
+@import 'variables';
 
 * {
   box-sizing: border-box;
@@ -7,6 +8,7 @@
 
 body {
   font-family: 'Grtsk Exa Bkslnt', Arial, Helvetica, sans-serif;
+  color: $color-text-primary;
 }
 
 ul {

@@ -21,6 +21,7 @@ module.exports = {
     'react/prop-types': 'off',
     'max-len': ['warn', 120],
     'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/no-namespace': 'off',
     'no-param-reassign': [
       'error',
       {

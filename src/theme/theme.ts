@@ -31,6 +31,7 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          backgroundColor: '#f6f6f4',
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
             width: 4,
@@ -45,3 +46,11 @@ export const theme = createTheme({
     },
   },
 });
+
+theme.typography.body2 = {
+  fontSize: '12px',
+  fontStyle: 'normal',
+  fontWeight: '400',
+  lineHeight: '133%',
+  letterSpacing: '0.12px',
+};

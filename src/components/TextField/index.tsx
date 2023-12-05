@@ -26,6 +26,11 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
       borderColor: '#14191ab8',
     },
   },
+  '& .Mui-error': {
+    '& .MuiInputBase-input ~ fieldset': {
+      borderColor: '#f26651',
+    },
+  },
   '& .MuiOutlinedInput-root:hover': {
     '& .MuiInputBase-input:focus ~ fieldset': {
       borderColor: '#14191ab8',
