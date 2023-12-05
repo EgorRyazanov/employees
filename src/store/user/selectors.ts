@@ -14,6 +14,8 @@ const SelectIsUserReady = createSelector(
   (loading, initial) => !loading && !initial,
 );
 
+const SelectUser = createSelector(root, data => data.user);
+
 const selectUserErrors = createSelector(root, data => data.error);
 
 export const userSelectors = {
@@ -21,4 +23,5 @@ export const userSelectors = {
   SelectIsUserInitial,
   SelectIsUserReady,
   selectUserErrors,
+  SelectUser,
 };
