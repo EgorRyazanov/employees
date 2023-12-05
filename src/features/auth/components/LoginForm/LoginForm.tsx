@@ -26,7 +26,7 @@ import styles from './LoginForm.module.scss';
 
 const LoginFormComponent: FC = () => {
   const errors = useAppSelector(authSelectors.selectAuthErrors);
-  const isLoading = useAppSelector(authSelectors.SelectIsUserFetching);
+  const isLoading = useAppSelector(authSelectors.SelectIsAuthLoading);
   const dispatch = useAppDispatch();
 
   const theme = useTheme();
@@ -59,8 +59,9 @@ const LoginFormComponent: FC = () => {
   useEffect(() => {
     if (errors != null && errors.validationData != null) {
       setValidationErrors(errors.validationData);
+      setError('root', { type: 'server', message: errors.message });
     }
-  }, [errors, setValidationErrors]);
+  }, [errors, setValidationErrors, setError]);
 
   const onSubmit = (values: LoginFormValue) => {
     dispatch(LoginStore.thunks.login(values));

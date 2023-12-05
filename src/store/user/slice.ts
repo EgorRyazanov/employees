@@ -8,7 +8,8 @@ export const reducer = createReducer(initialState, builder => {
   builder.addCase(actions.request, state => {
     state.status = STATUS.request;
   });
-  builder.addCase(actions.success, state => {
+  builder.addCase(actions.success, (state, { payload: user }) => {
+    state.user = user;
     state.status = STATUS.success;
     state.error = initialState.error;
   });

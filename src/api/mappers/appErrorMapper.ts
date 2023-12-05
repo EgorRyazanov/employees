@@ -11,6 +11,7 @@ export type ErrorMapper<TDto extends Record<string, unknown>, TEntity extends Re
 
 export class AppErrorMapper {
   public static fromDto(httpError: AxiosError): AppError {
+    console.log(httpError);
     const { message } = httpError;
     return new AppError(message);
   }
@@ -27,7 +28,7 @@ export class AppErrorMapper {
       throw new Error('Provided mapper does not have implementation of validationErrorFromDto');
     }
 
-    const { errors: error, detail } = httpError.response.data;
+    const { errors: error, title } = httpError.response.data;
 
     if (error == null) {
       return this.fromDto(httpError);
@@ -35,6 +36,6 @@ export class AppErrorMapper {
 
     const validationData = typeof mapper === 'function' ? mapper(error) : mapper.validationErrorFromDto(error);
 
-    return new AppError<TEntity>(detail ?? '', validationData);
+    return new AppError<TEntity>(title ?? '', validationData);
   }
 }

@@ -5,23 +5,20 @@ import { TRootState } from '..';
 
 const root = (state: TRootState) => state.auth;
 
-const SelectIsUserFetching = createSelector(root, data => data.status === STATUS.request);
+const SelectIsAuthLoading = createSelector(root, data => data.status === STATUS.request);
 
-const SelectIsUserInitial = createSelector(root, data => data.status === STATUS.initial);
+const SelectIsAuthInitial = createSelector(root, data => data.status === STATUS.initial);
 
-const SelectIsUserReady = createSelector(
-  [SelectIsUserFetching, SelectIsUserInitial],
+const SelectIsAuthReady = createSelector(
+  [SelectIsAuthLoading, SelectIsAuthInitial],
   (loading, initial) => !loading && !initial,
 );
-
-const selectUser = createSelector(root, data => data.user);
 
 const selectAuthErrors = createSelector(root, data => data.error);
 
 export const authSelectors = {
-  SelectIsUserFetching,
-  SelectIsUserInitial,
-  SelectIsUserReady,
-  selectUser,
+  SelectIsAuthLoading,
+  SelectIsAuthInitial,
+  SelectIsAuthReady,
   selectAuthErrors,
 };
