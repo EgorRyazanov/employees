@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
 
 import { useAppSelector } from '../../hooks';
 import { userSelectors } from '../../store/user/selectors';
@@ -12,7 +13,11 @@ export const NonAuthGuard: FC<Guard> = ({ element }) => {
   const [search] = useSearchParams();
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (user != null) {

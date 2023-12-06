@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Navigate, To, useLocation } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
 
 import { useAppSelector } from '../../hooks';
 import { userSelectors } from '../../store/user/selectors';
@@ -19,7 +20,11 @@ export const AuthGuard: FC<Guard> = ({ element }) => {
   };
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (!user) {
