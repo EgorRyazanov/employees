@@ -21,7 +21,7 @@ export const NonAuthGuard: FC<Guard> = ({ element }) => {
   }
 
   if (user != null) {
-    const redirect = search.get('next') ?? RoutePaths.Main;
+    const redirect = search.get('next') ?? RoutePaths.MainView;
     return <Navigate to={redirect} replace />;
   }
 
