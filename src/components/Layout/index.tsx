@@ -7,7 +7,7 @@ import { Header } from '../Header';
 
 const LayoutComponent: FC = () => {
   return (
-    <Box>
+    <Box sx={{ overflow: 'hidden' }}>
       <Header />
       <Outlet />
     </Box>

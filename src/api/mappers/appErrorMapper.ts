@@ -11,7 +11,6 @@ export type ErrorMapper<TDto extends Record<string, unknown>, TEntity extends Re
 
 export class AppErrorMapper {
   public static fromDto(httpError: AxiosError): AppError {
-    console.log(httpError);
     const { message } = httpError;
     return new AppError(message);
   }
