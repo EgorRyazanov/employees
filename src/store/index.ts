@@ -3,11 +3,13 @@ import { LoginStore } from './auth';
 import { PersonStore } from './person';
 import { NodesStore } from './node';
 import { TransformOptionStore } from './transformOptions';
+import { FiltersStore } from './filters';
 
 const rootReducer = combineReducers({
   auth: LoginStore.reducer,
   person: PersonStore.reducer,
   nodes: NodesStore.reducer,
+  filters: FiltersStore.reducer,
   transformOptions: TransformOptionStore.reducer,
 });
 

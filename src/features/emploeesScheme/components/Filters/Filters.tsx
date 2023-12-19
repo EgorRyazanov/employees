@@ -1,35 +1,67 @@
 import { Box, Button, MenuItem, SelectChangeEvent } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import { SelectComponent } from '../../../../components';
-import { NodeCities } from '../../../../models/nodeCities';
 import { typedMemo } from '../../../../utils/typedMemo';
+import { FiltersApi } from '../../../../api/services/filtersApi';
+import { Location } from '../../../../models/location';
+import { useAppDispatch } from '../../../../hooks';
+import { FiltersStore } from '../../../../store/filters';
 
 const FiltersComponent = () => {
-  const [city, setCity] = useState<NodeCities>(NodeCities.Ekb);
+  const dispatch = useAppDispatch();
+  const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const [locations, setLocations] = useState<readonly Location[]>([]);
 
-  const handleCityChange = (event: SelectChangeEvent<unknown>) => {
-    if (NodeCities.isNodeCity(event.target.value)) {
-      setCity(event.target.value);
+  const handleLocationChange = (event: SelectChangeEvent<unknown>) => {
+    if (typeof event.target.value === 'string') {
+      setSelectedLocation(event.target.value);
     }
   };
+
+  const handleApplyLocationFilter = useCallback(() => {
+    const appliedLocation = locations.find(location => location.name === selectedLocation);
+    if (appliedLocation != null) {
+      dispatch(FiltersStore.actions.changeLocation(appliedLocation));
+    }
+  }, [dispatch, locations, selectedLocation]);
+
+  useEffect(() => {
+    const getLocations = async () => {
+      const filterLocations = await FiltersApi.getLocations();
+      const initialLocation =
+        filterLocations.find(location => location.name === 'Брусника.Екатеринбург') ?? filterLocations[0];
+      setSelectedLocation(initialLocation.name);
+      setLocations(filterLocations);
+    };
+    getLocations();
+  }, []);
+
+  useEffect(() => {
+    handleApplyLocationFilter();
+  }, [locations, handleApplyLocationFilter]);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', padding: '24px 60px', gap: '16px' }}>
       <SelectComponent
-        value={city}
+        value={selectedLocation}
         displayEmpty
-        onChange={handleCityChange}
+        disabled={locations.length === 0}
+        onChange={handleLocationChange}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        renderValue={(value: any) => (value ? value : 'Выберете город')}
         sx={{ width: 200 }}
         IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
-        {NodeCities.toOptions().map((option, index) => (
-          <MenuItem key={index} value={option.value}>
+        {locations.map(option => (
+          <MenuItem key={option.id} value={option.name}>
             {option.name}
           </MenuItem>
         ))}
       </SelectComponent>
-      <Button variant="contained">Применить</Button>
+      <Button onClick={handleApplyLocationFilter} variant="contained">
+        Применить
+      </Button>
     </Box>
   );
 };

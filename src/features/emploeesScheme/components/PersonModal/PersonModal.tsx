@@ -7,15 +7,14 @@ import { typedMemo } from '../../../../utils/typedMemo';
 import { useAppSelector } from '../../../../hooks';
 import { personSelectors } from '../../../../store/person/selectors';
 
-interface UserModalComponentProps {
+interface PersonModalComponentProps {
   isOpened: boolean;
   toggleModal: () => void;
 }
 
-const PersonModalComponent: FC<UserModalComponentProps> = ({ isOpened, toggleModal }) => {
+const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleModal }) => {
   const person = useAppSelector(personSelectors.SelectPersonDetails);
   const isLoading = useAppSelector(personSelectors.SelectIsPersonDetailsLoading);
-  console.log(isLoading);
 
   return (
     <Modal sx={{ border: 'none' }} open={isOpened} onClose={toggleModal}>
@@ -44,6 +43,22 @@ const PersonModalComponent: FC<UserModalComponentProps> = ({ isOpened, toggleMod
               <Box sx={{ display: 'flex', gap: '12px' }}>
                 <Typography sx={{ color: '#A8A19A' }}>Должность:</Typography>
                 <Typography>{person.position}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: '12px' }}>
+                <Typography sx={{ color: '#A8A19A' }}>Тип работы:</Typography>
+                <Typography>{person.workType}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: '12px' }}>
+                <Typography sx={{ color: '#A8A19A' }}>Локация:</Typography>
+                <Typography>{person.location}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: '12px' }}>
+                <Typography sx={{ color: '#A8A19A' }}>Почта:</Typography>
+                <Typography>{person.email ?? '-'}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: '12px' }}>
+                <Typography sx={{ color: '#A8A19A' }}>Телефон:</Typography>
+                <Typography>{person.phoneNumber ?? '-'}</Typography>
               </Box>
             </Box>
           </>

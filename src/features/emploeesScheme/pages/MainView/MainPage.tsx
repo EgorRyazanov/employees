@@ -9,6 +9,7 @@ import { nodeSelectors } from '../../../../store/node/selectors';
 import { HeaderNode } from '../../components/HeaderNode';
 import { Filters } from '../../components/Filters';
 import { transformOptionsSelectors } from '../../../../store/transformOptions/selectors';
+import { filtersSelectors } from '../../../../store/filters/selectors';
 
 const NODE_SHIFT = 500;
 const NODE_PADDING = 60;
@@ -18,10 +19,13 @@ const MainPageComponent: FC = () => {
   const nodes = useAppSelector(nodeSelectors.SelectNodes);
   const isLoading = useAppSelector(nodeSelectors.SelectIsNodesLoading);
   const options = useAppSelector(transformOptionsSelectors.SelectOptions);
+  const selectedLocation = useAppSelector(filtersSelectors.SelectLocation);
 
   useEffect(() => {
-    dispatch(NodesStore.thunks.getNodes());
-  }, [dispatch]);
+    if (selectedLocation != null) {
+      dispatch(NodesStore.thunks.getNodes(selectedLocation));
+    }
+  }, [dispatch, selectedLocation]);
 
   return (
     <div>
@@ -38,9 +42,10 @@ const MainPageComponent: FC = () => {
         <Filters />
         <TransformComponent>
           <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
-            {nodes?.next.map((node, index) => (
-              <HeaderNode key={node.id} left={index * NODE_SHIFT + NODE_PADDING} node={node} />
-            ))}
+            {selectedLocation != null &&
+              nodes?.next.map((node, index) => (
+                <HeaderNode key={node.id} left={index * NODE_SHIFT + NODE_PADDING} node={node} />
+              ))}
           </Box>
         </TransformComponent>
       </TransformWrapper>

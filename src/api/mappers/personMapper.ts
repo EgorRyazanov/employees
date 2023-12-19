@@ -21,7 +21,7 @@ class PersonMapper implements MapperFromDto<PersonDto, Person> {
       fullName: dto.fullName,
       email: dto.email,
       phoneNumber: dto.phoneNumber,
-      position: dto.workType,
+      position: dto.position,
       isVacancy: dto.isVacancy,
       workType: dto.workType,
       userNumber: dto.userNumber,

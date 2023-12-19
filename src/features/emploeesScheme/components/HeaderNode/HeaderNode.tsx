@@ -12,6 +12,7 @@ import { TransformOptionStore } from '../../../../store/transformOptions';
 import { Person } from '../../../../models/person';
 import { PersonModal } from '../PersonModal';
 import { PersonStore } from '../../../../store/person';
+import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 import styles from './HeaderNode.module.scss';
 
 interface NodeComponentProps {
@@ -25,6 +26,8 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const [isBodyActive, setIsBodyActive] = useState(false);
   const [isNextNodesActive, setIsNextNodesActive] = useState(false);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
+  const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
+  const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   const handlePersonClick = (personId: Person['id']) => {
     setHasPersonModalOpen(true);
@@ -34,6 +37,16 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const handleDropPerson = () => {
     setHasPersonModalOpen(false);
     dispatch(PersonStore.actions.dropPersonDetails());
+  };
+
+  const handleMainNodeClick = (mainNode: NodeType) => {
+    setHasMainNodeModalOpen(true);
+    setActiveMainNode(mainNode);
+  };
+
+  const handleMainNodeDrop = () => {
+    setHasMainNodeModalOpen(false);
+    setActiveMainNode(activeMainNode);
   };
 
   const handleBodyToggle = () => {
@@ -54,9 +67,15 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
 
   return (
     <div className={styles.cardContainer} style={{ left: `${left}px`, position: 'absolute' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Box
+        onClick={() => handleMainNodeClick(node)}
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
         <Typography>{node.name}</Typography>
-        <IconButton onClick={handleBodyToggle}>
+        <IconButton
+          onClick={e => {
+            e.stopPropagation();
+            handleBodyToggle();
+          }}>
           {isBodyActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </IconButton>
       </Box>
@@ -75,7 +94,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
       </Box>
       {isBodyActive && (
         <>
-          <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '24px', cursor: 'pointer' }}>
+          <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '24px' }}>
             <IconButton onClick={handleNextNodeToggle}>
               {isNextNodesActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
@@ -133,6 +152,9 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
           )}
           {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
         </>
+      )}
+      {hasMainNodeModalOpen && activeMainNode != null && (
+        <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
       )}
     </div>
   );
