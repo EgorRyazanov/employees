@@ -7,14 +7,14 @@ import { isApiError } from '../../utils/isApiError';
 import { actions } from './actions';
 import { loginMapper } from '../../api/mappers/loginMapper';
 import { UserSecretStorageService } from '../../api/services/userSecretStorage';
-import { UserStore } from '../user';
+import { PersonStore } from '../person';
 
 const login = createAsyncThunk(`login/login`, async (form: Login, { dispatch }) => {
   dispatch(actions.request());
   try {
     const secret = await AuthApi.login(form);
     dispatch(actions.success());
-    dispatch(UserStore.thunks.getMe());
+    dispatch(PersonStore.thunks.getMe());
     UserSecretStorageService.save(secret);
   } catch (error: unknown) {
     if (isApiError(error)) {

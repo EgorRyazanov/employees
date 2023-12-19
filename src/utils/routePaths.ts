@@ -1,4 +1,5 @@
 export enum RoutePaths {
-  Main = '/',
   Login = '/login',
+  MainView = '/',
+  TableView = '/table',
 }

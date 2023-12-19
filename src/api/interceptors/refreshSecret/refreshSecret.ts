@@ -21,12 +21,11 @@ export async function refreshSecret(
 
 export function shouldRefreshSecretForUrl(config: AxiosRequestConfig): boolean {
   const { url, baseURL } = config;
-
   if (url == null || baseURL == null) {
     return false;
   }
 
-  const fullUrl = `${baseURL}${url}`;
+  const fullUrl = `${baseURL}/${url}`;
   const homeUrl = new URL('', CONFIG.apiUrl).toString();
 
   const isHomeRequest = fullUrl.startsWith(homeUrl);

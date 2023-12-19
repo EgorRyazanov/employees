@@ -1,10 +1,16 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { LoginStore } from './auth';
-import { UserStore } from './user';
+import { PersonStore } from './person';
+import { NodesStore } from './node';
+import { TransformOptionStore } from './transformOptions';
+import { FiltersStore } from './filters';
 
 const rootReducer = combineReducers({
   auth: LoginStore.reducer,
-  user: UserStore.reducer,
+  person: PersonStore.reducer,
+  nodes: NodesStore.reducer,
+  filters: FiltersStore.reducer,
+  transformOptions: TransformOptionStore.reducer,
 });
 
 export const store = configureStore({
