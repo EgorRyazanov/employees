@@ -10,8 +10,9 @@ import { Node } from '../Node';
 import { useAppDispatch } from '../../../../hooks';
 import { TransformOptionStore } from '../../../../store/transformOptions';
 import { Person } from '../../../../models/person';
-import styles from './HeaderNode.module.scss';
 import { PersonModal } from '../PersonModal';
+import { PersonStore } from '../../../../store/person';
+import styles from './HeaderNode.module.scss';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -23,12 +24,16 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
 
   const [isBodyActive, setIsBodyActive] = useState(false);
   const [isNextNodesActive, setIsNextNodesActive] = useState(false);
-  const [hasUserModalOpen, setHasUserModalOpen] = useState(false);
-  const [activeUser, setActiveUser] = useState<Person | null>(null);
+  const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
 
-  const handleUserClick = (person: Person | null = null) => {
-    setHasUserModalOpen(!hasUserModalOpen);
-    setActiveUser(person);
+  const handlePersonClick = (personId: Person['id']) => {
+    setHasPersonModalOpen(true);
+    dispatch(PersonStore.thunks.getPersonDetails(personId));
+  };
+
+  const handleDropPerson = () => {
+    setHasPersonModalOpen(false);
+    dispatch(PersonStore.actions.dropPersonDetails());
   };
 
   const handleBodyToggle = () => {
@@ -97,7 +102,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
                   person =>
                     !person.isVacancy && (
                       <Box
-                        onClick={() => handleUserClick(person)}
+                        onClick={() => handlePersonClick(person.id)}
                         key={person.id}
                         sx={{ padding: '8px 12px', backgroundColor: '#E8F5E9' }}>
                         <Typography>{person.fullName}</Typography>
@@ -115,7 +120,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
                 {node.employees.map(
                   person =>
                     !person.isVacancy && (
-                      <Box onClick={() => handleUserClick(person)} key={person.id} sx={{ padding: '8px 12px' }}>
+                      <Box onClick={() => handlePersonClick(person.id)} key={person.id} sx={{ padding: '8px 12px' }}>
                         <Typography>{person.fullName}</Typography>
                         <Typography sx={{ color: '#A8A19A' }} variant="body2">
                           {person.position}
@@ -126,9 +131,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
               </Box>
             </Box>
           )}
-          {hasUserModalOpen && activeUser != null && (
-            <PersonModal user={activeUser} isOpened={hasUserModalOpen} toggleModal={handleUserClick} />
-          )}
+          {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
         </>
       )}
     </div>

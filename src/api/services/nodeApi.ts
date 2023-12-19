@@ -8,10 +8,7 @@ export namespace NodeApi {
 
   export async function get(): Promise<Node> {
     const { data } = await http.get<NodeDto>(nodeUrlGet, { params: { LocationName: 'Брусника.Екатеринбург' } });
-    console.log(data);
     const nodes = nodeMapper.fromDto(data);
-
-    console.log(nodes);
 
     return nodes;
   }

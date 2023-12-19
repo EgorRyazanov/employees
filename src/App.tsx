@@ -6,7 +6,7 @@ import { LoginPage } from './features/auth/pages/LoginPage';
 import { MainPage } from './features/emploeesScheme/pages/MainView';
 import { TableViewPage } from './features/emploeesScheme/pages/TableView';
 import { useAppDispatch } from './hooks';
-import { UserStore } from './store/user';
+import { PersonStore } from './store/person';
 import { AuthGuard } from './utils/guards/AuthGuard';
 import { NonAuthGuard } from './utils/guards/nonAuthGuard';
 import { RoutePaths } from './utils/routePaths';
@@ -16,7 +16,7 @@ export const App: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(UserStore.thunks.getMe());
+    dispatch(PersonStore.thunks.getMe());
   }, [dispatch]);
 
   return (

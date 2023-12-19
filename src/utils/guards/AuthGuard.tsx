@@ -3,13 +3,13 @@ import { Navigate, To, useLocation } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 
 import { useAppSelector } from '../../hooks';
-import { userSelectors } from '../../store/user/selectors';
+import { personSelectors } from '../../store/person/selectors';
 import { RoutePaths } from '../routePaths';
 import { Guard } from './types';
 
 export const AuthGuard: FC<Guard> = ({ element }) => {
-  const user = useAppSelector(userSelectors.SelectUser);
-  const isLoading = useAppSelector(userSelectors.SelectIsUserLoading);
+  const person = useAppSelector(personSelectors.SelectMe);
+  const isLoading = useAppSelector(personSelectors.SelectIsMeLoading);
   const location = useLocation();
 
   const redirect: To = {
@@ -27,7 +27,7 @@ export const AuthGuard: FC<Guard> = ({ element }) => {
     );
   }
 
-  if (!user) {
+  if (!person) {
     return <Navigate to={redirect} replace />;
   }
 

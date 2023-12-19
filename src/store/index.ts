@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { LoginStore } from './auth';
-import { UserStore } from './user';
+import { PersonStore } from './person';
 import { NodesStore } from './node';
 import { TransformOptionStore } from './transformOptions';
 
 const rootReducer = combineReducers({
   auth: LoginStore.reducer,
-  user: UserStore.reducer,
+  person: PersonStore.reducer,
   nodes: NodesStore.reducer,
   transformOptions: TransformOptionStore.reducer,
 });

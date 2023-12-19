@@ -3,13 +3,13 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 
 import { useAppSelector } from '../../hooks';
-import { userSelectors } from '../../store/user/selectors';
+import { personSelectors } from '../../store/person/selectors';
 import { RoutePaths } from '../routePaths';
 import { Guard } from './types';
 
 export const NonAuthGuard: FC<Guard> = ({ element }) => {
-  const user = useAppSelector(userSelectors.SelectUser);
-  const isLoading = useAppSelector(userSelectors.SelectIsUserLoading);
+  const person = useAppSelector(personSelectors.SelectMe);
+  const isLoading = useAppSelector(personSelectors.SelectIsMeLoading);
   const [search] = useSearchParams();
 
   if (isLoading) {
@@ -20,7 +20,7 @@ export const NonAuthGuard: FC<Guard> = ({ element }) => {
     );
   }
 
-  if (user != null) {
+  if (person != null) {
     const redirect = search.get('next') ?? RoutePaths.MainView;
     return <Navigate to={redirect} replace />;
   }
