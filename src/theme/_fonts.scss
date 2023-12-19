@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'Grtsk Exa Bkslnt';
+  src:
+    local('Grtsk Exa Bkslnt Bold'),
+    local('GrtskExaBkslnt-Bold'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Bold.woff2') format('woff2'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Grtsk Exa Bkslnt';
+  src:
+    local('Grtsk Exa Bkslnt Semibold'),
+    local('GrtskExaBkslnt-Semibold'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Semibold.woff2') format('woff2'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Semibold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Grtsk Exa Bkslnt';
+  src:
+    local('Grtsk Exa Bkslnt Medium'),
+    local('GrtskExaBkslnt-Medium'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Medium.woff2') format('woff2'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Grtsk Exa';
+  src:
+    local('Grtsk Exa Regular'),
+    local('GrtskExa-Regular'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Regular.woff2') format('woff2'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Grtsk Exa';
+  src:
+    local('Grtsk Exa Light'),
+    local('GrtskExa-Light'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Light.woff2') format('woff2'),
+    url('/src/assets/fonts/grtsk-exa/GrtskExa-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}

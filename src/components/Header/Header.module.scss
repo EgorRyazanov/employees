@@ -1,0 +1,8 @@
+@import 'src/theme/variables';
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 60px;
+  background-color: $color-bg-default;
+}
