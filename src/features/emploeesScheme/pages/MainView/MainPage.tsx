@@ -11,7 +11,7 @@ import { Filters } from '../../components/Filters';
 import { transformOptionsSelectors } from '../../../../store/transformOptions/selectors';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 
-const NODE_SHIFT = 500;
+const NODE_SHIFT = 450;
 const NODE_PADDING = 60;
 
 const MainPageComponent: FC = () => {

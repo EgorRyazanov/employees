@@ -11,6 +11,7 @@ import { useAppDispatch } from '../../../../hooks';
 import { PersonStore } from '../../../../store/person';
 import { PersonModal } from '../PersonModal';
 import { Person } from '../../../../models/person';
+import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -21,6 +22,18 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const dispatch = useAppDispatch();
   const [isActive, setIsActive] = useState(false);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
+  const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
+  const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
+
+  const handleMainNodeClick = (mainNode: NodeType) => {
+    setHasMainNodeModalOpen(true);
+    setActiveMainNode(mainNode);
+  };
+
+  const handleMainNodeDrop = () => {
+    setHasMainNodeModalOpen(false);
+    setActiveMainNode(activeMainNode);
+  };
 
   const handlePersonClick = (personId: Person['id']) => {
     setHasPersonModalOpen(true);
@@ -48,7 +61,9 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
     <Box sx={{ paddingLeft: `${space ?? 0}px` }}>
       <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         <IconButton onClick={handleClick}>{isActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Box
+          onClick={() => handleMainNodeClick(node)}
+          sx={{ display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer' }}>
           <GroupIcon sx={{ color: '#A8A19A' }} />
           <Box>
             <Typography>{node.name}</Typography>
@@ -99,6 +114,9 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
         </Box>
       )}
       {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
+      {hasMainNodeModalOpen && activeMainNode != null && (
+        <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
+      )}
     </Box>
   );
 };
