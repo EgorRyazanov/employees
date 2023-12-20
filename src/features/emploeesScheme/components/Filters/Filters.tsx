@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Box, MenuItem, SelectChangeEvent } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -8,6 +8,7 @@ import { FiltersApi } from '../../../../api/services/filtersApi';
 import { Location } from '../../../../models/location';
 import { useAppDispatch } from '../../../../hooks';
 import { FiltersStore } from '../../../../store/filters';
+import { DisplayLevelMultiSelect } from '../DisplayLevelMultiSelect';
 
 const FiltersComponent = () => {
   const dispatch = useAppDispatch();
@@ -51,7 +52,7 @@ const FiltersComponent = () => {
         onChange={handleLocationChange}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         renderValue={(value: any) => (value ? value : 'Выберете город')}
-        sx={{ width: 200 }}
+        sx={{ width: 250 }}
         IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
         {locations.map(option => (
           <MenuItem key={option.id} value={option.name}>
@@ -59,9 +60,7 @@ const FiltersComponent = () => {
           </MenuItem>
         ))}
       </SelectComponent>
-      <Button onClick={handleApplyLocationFilter} variant="contained">
-        Применить
-      </Button>
+      <DisplayLevelMultiSelect />
     </Box>
   );
 };
