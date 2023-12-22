@@ -12,62 +12,101 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
 import { typedMemo } from '../../../../utils/typedMemo';
-
-// const location = [
-//   { name: 'bla', id: 1 },
-//   { name: 'damn', id: 2 },
-// ];
-const variants = ['Отделы', 'Подразделения', 'Группы', 'Сотрудники'];
-
-const mockOptions = [
-  { location: { name: 'Гера', id: 1 }, variant: 'Подразделения', isSelected: true, isVisible: false },
-  { location: { name: 'Афина', id: 2 }, variant: 'Подразделения', isSelected: true, isVisible: false },
-  { location: { name: 'Геракл', id: 3 }, variant: 'Подразделения', isSelected: true, isVisible: false },
-];
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { filtersSelectors } from '../../../../store/filters/selectors';
+import { FiltersApi } from '../../../../api/services/filtersApi';
+import { LevelDisplayedOptions } from './types';
+import { StructureEnum } from '../../../../models/structure';
+import { FiltersStore } from '../../../../store/filters';
+import { Division } from '../../../../models/division';
 
 const DisplayLevelMultiSelectComponent = () => {
+  const dispatch = useAppDispatch();
+  const appliedLocation = useAppSelector(filtersSelectors.SelectLocation);
+
   const [isSelectVisible, setIsSelectVisible] = useState(false);
-  const [options, setOptions] = useState(mockOptions);
+  const [options, setOptions] = useState<LevelDisplayedOptions[]>([]);
+
+  useEffect(() => {
+    const getOptions = async () => {
+      if (appliedLocation != null) {
+        const divisions = await FiltersApi.getDivisions(appliedLocation);
+        const options = divisions.map(division => {
+          return {
+            isVisible: false,
+            isSelected: true,
+            variant: StructureEnum.Division,
+            division,
+          };
+        });
+        setOptions(options);
+      }
+    };
+
+    getOptions();
+  }, [appliedLocation]);
 
   const handleClickToggleSelect = () => {
     setIsSelectVisible(!isSelectVisible);
   };
 
-  const handleSelectLocation = (id: number) => {
+  const handleSelectLocation = (id: Division['id']) => {
     const copiedOptions = [...options];
-    const selectedOption = copiedOptions.find(option => option.location.id === id);
+    const selectedOption = copiedOptions.find(option => option.division.id === id);
     if (selectedOption != null) {
-      selectedOption.isSelected = !selectedOption.isSelected;
-      setOptions(copiedOptions);
+      setOptions(
+        copiedOptions.map(option => {
+          if (option.division.id === id) {
+            return { ...option, isSelected: !option.isSelected };
+          }
+
+          return option;
+        }),
+      );
     }
   };
 
-  const handleToggleLocation = (id: number) => {
+  const handleToggleLocation = (id: Division['id']) => {
     const copiedOptions = [...options];
-    const selectedOption = copiedOptions.find(option => option.location.id === id);
+    const selectedOption = copiedOptions.find(option => option.division.id === id);
     if (
       selectedOption != null &&
       ((!selectedOption.isSelected && selectedOption.isVisible) || selectedOption.isSelected)
     ) {
-      selectedOption.isVisible = !selectedOption.isVisible;
-      setOptions(copiedOptions);
+      setOptions(
+        copiedOptions.map(option => {
+          if (option.division.id === id) {
+            return { ...option, isVisible: !option.isVisible };
+          }
+
+          return option;
+        }),
+      );
     }
   };
 
-  const handleChangeVariant = (id: number, variant: string) => {
+  const handleChangeVariant = (id: Division['id'], variant: StructureEnum) => {
     const copiedOptions = [...options];
-    const selectedOption = copiedOptions.find(option => option.location.id === id);
+    const selectedOption = copiedOptions.find(option => option.division.id === id);
     if (selectedOption != null && selectedOption.isSelected) {
-      selectedOption.variant = variant;
-      setOptions(copiedOptions);
+      setOptions(
+        copiedOptions.map(option => {
+          if (option.division.id === id) {
+            return { ...option, variant };
+          }
+
+          return option;
+        }),
+      );
     }
   };
 
   const handleSubmit = () => {
+    dispatch(FiltersStore.actions.changeFilterLevelDisplayed(options));
     handleClickToggleSelect();
   };
 
@@ -87,7 +126,7 @@ const DisplayLevelMultiSelectComponent = () => {
           ),
         }}
       />
-      {isSelectVisible && (
+      {isSelectVisible && options.length > 0 && (
         <Box
           sx={{
             position: 'absolute',
@@ -104,27 +143,34 @@ const DisplayLevelMultiSelectComponent = () => {
             {options.map((option, index) => (
               <Box key={index}>
                 <Box
-                  onClick={() => handleSelectLocation(option.location.id)}
+                  onClick={() => handleSelectLocation(option.division.id)}
                   sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                   <IconButton
                     onClick={event => {
                       event.stopPropagation();
-                      handleToggleLocation(option.location.id);
+                      handleToggleLocation(option.division.id);
                     }}>
                     {option.isVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                   <CheckBoxComponent checked={option.isSelected} />
-                  <Typography>{option.location.name}</Typography>
+                  <Typography>{option.division.name}</Typography>
                 </Box>
                 {option.isVisible && (
                   <Box sx={{ paddingLeft: '32px' }}>
                     <FormControl>
                       <RadioGroup
-                        name={option.location.name}
+                        name={option.division.name}
                         value={option.variant}
-                        onChange={event => handleChangeVariant(option.location.id, event.target.value)}>
-                        {variants.map((variant, index) => (
-                          <FormControlLabel key={index} value={variant} control={<Radio />} label={variant} />
+                        onChange={event =>
+                          handleChangeVariant(option.division.id, event.target.value as StructureEnum)
+                        }>
+                        {StructureEnum.toArray().map((variant, index) => (
+                          <FormControlLabel
+                            key={index}
+                            value={variant}
+                            control={<Radio />}
+                            label={StructureEnum.toReadable(variant)}
+                          />
                         ))}
                       </RadioGroup>
                     </FormControl>

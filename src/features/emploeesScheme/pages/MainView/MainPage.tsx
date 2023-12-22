@@ -20,12 +20,13 @@ const MainPageComponent: FC = () => {
   const isLoading = useAppSelector(nodeSelectors.SelectIsNodesLoading);
   const options = useAppSelector(transformOptionsSelectors.SelectOptions);
   const selectedLocation = useAppSelector(filtersSelectors.SelectLocation);
+  const filterDisplayedLevels = useAppSelector(filtersSelectors.SelectFilterLevelDisplayed);
 
   useEffect(() => {
-    if (selectedLocation != null) {
-      dispatch(NodesStore.thunks.getNodes(selectedLocation));
+    if (selectedLocation != null && filterDisplayedLevels != null) {
+      dispatch(NodesStore.thunks.getNodes({ location: selectedLocation, displayedLevels: filterDisplayedLevels }));
     }
-  }, [dispatch, selectedLocation]);
+  }, [dispatch, selectedLocation, filterDisplayedLevels]);
 
   return (
     <div>
