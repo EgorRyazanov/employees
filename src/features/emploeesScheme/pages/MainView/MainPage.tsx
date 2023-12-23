@@ -11,7 +11,7 @@ import { Filters } from '../../components/Filters';
 import { transformOptionsSelectors } from '../../../../store/transformOptions/selectors';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 
-const NODE_SHIFT = 500;
+const NODE_SHIFT = 450;
 const NODE_PADDING = 60;
 
 const MainPageComponent: FC = () => {
@@ -20,12 +20,13 @@ const MainPageComponent: FC = () => {
   const isLoading = useAppSelector(nodeSelectors.SelectIsNodesLoading);
   const options = useAppSelector(transformOptionsSelectors.SelectOptions);
   const selectedLocation = useAppSelector(filtersSelectors.SelectLocation);
+  const filterDisplayedLevels = useAppSelector(filtersSelectors.SelectFilterLevelDisplayed);
 
   useEffect(() => {
-    if (selectedLocation != null) {
-      dispatch(NodesStore.thunks.getNodes(selectedLocation));
+    if (selectedLocation != null && filterDisplayedLevels != null) {
+      dispatch(NodesStore.thunks.getNodes({ location: selectedLocation, displayedLevels: filterDisplayedLevels }));
     }
-  }, [dispatch, selectedLocation]);
+  }, [dispatch, selectedLocation, filterDisplayedLevels]);
 
   return (
     <div>

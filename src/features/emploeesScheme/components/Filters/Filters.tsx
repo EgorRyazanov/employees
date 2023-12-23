@@ -8,10 +8,15 @@ import { FiltersApi } from '../../../../api/services/filtersApi';
 import { Location } from '../../../../models/location';
 import { useAppDispatch } from '../../../../hooks';
 import { FiltersStore } from '../../../../store/filters';
+import { DisplayLevelMultiSelect } from '../DisplayLevelMultiSelect';
+import { ParamsOptionsMultiSelect } from '../ParamsOptionsMultiSelect';
+
+export type Action = 'initial' | 'full' | 'touched';
 
 const FiltersComponent = () => {
   const dispatch = useAppDispatch();
-  const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const [action, setAction] = useState<Action>('initial');
+  const [selectedLocation, setSelectedLocation] = useState('');
   const [locations, setLocations] = useState<readonly Location[]>([]);
 
   const handleLocationChange = (event: SelectChangeEvent<unknown>) => {
@@ -23,9 +28,14 @@ const FiltersComponent = () => {
   const handleApplyLocationFilter = useCallback(() => {
     const appliedLocation = locations.find(location => location.name === selectedLocation);
     if (appliedLocation != null) {
+      setAction('initial');
       dispatch(FiltersStore.actions.changeLocation(appliedLocation));
     }
   }, [dispatch, locations, selectedLocation]);
+
+  const handleChangeAction = (action: Action) => {
+    setAction(action);
+  };
 
   useEffect(() => {
     const getLocations = async () => {
@@ -51,7 +61,7 @@ const FiltersComponent = () => {
         onChange={handleLocationChange}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         renderValue={(value: any) => (value ? value : 'Выберете город')}
-        sx={{ width: 200 }}
+        sx={{ width: 250 }}
         IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
         {locations.map(option => (
           <MenuItem key={option.id} value={option.name}>
@@ -59,8 +69,16 @@ const FiltersComponent = () => {
           </MenuItem>
         ))}
       </SelectComponent>
-      <Button onClick={handleApplyLocationFilter} variant="contained">
-        Применить
+      <ParamsOptionsMultiSelect action={action} callback={() => handleChangeAction('touched')} />
+      <DisplayLevelMultiSelect action={action} callback={() => handleChangeAction('touched')} />
+      <Button variant="outlined" sx={{ border: '1px solid #14191A1F' }} onClick={() => handleChangeAction('initial')}>
+        Сбросить фильтры
+      </Button>
+      <Button
+        variant="outlined"
+        sx={{ border: '1px solid #14191A1F', marginLeft: 'auto' }}
+        onClick={() => handleChangeAction('full')}>
+        Развернуть структуру
       </Button>
     </Box>
   );
