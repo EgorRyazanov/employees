@@ -13,6 +13,8 @@ class NodeMapper implements MapperFromDto<NodeDto, Node> {
       employers: dto.employers.map(personDto => personMapper.fromDto(personDto)),
       userCount: dto.userCount,
       vacancyCount: dto.vacancyCount,
+      isDisplay: dto.isDisplay,
+      structureEnum: dto.structureEnum,
     };
   }
 }

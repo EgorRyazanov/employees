@@ -1,5 +1,5 @@
-import { Location } from '../../models/location';
 import { Node } from '../../models/node';
+import { NodesFilter } from '../../models/nodeFilters';
 import { NodeDto } from '../dto/nodes/nodeDto';
 import { http } from '../http';
 import { nodeMapper } from '../mappers/nodeMapper';
@@ -7,8 +7,25 @@ import { nodeMapper } from '../mappers/nodeMapper';
 export namespace NodeApi {
   const nodeUrlGet = 'api/employee/getEmployeesByCity';
 
-  export async function get(location: Location): Promise<Node> {
-    const { data } = await http.get<NodeDto>(nodeUrlGet, { params: { LocationName: location.name } });
+  export async function get(filters: NodesFilter): Promise<Node> {
+    const params = new URLSearchParams();
+    params.append('LocationName', filters.location.name);
+    const filterDisplaysList = filters.displayedLevels
+      .filter(filter => filter.isSelected)
+      .map(filter => {
+        return {
+          structureName: filter.division.name,
+          structureEnum: filter.variant,
+        };
+      });
+
+    filterDisplaysList.forEach(filter => {
+      params.append('FilterDisplaysList', JSON.stringify(filter));
+    });
+    const request = {
+      params: params,
+    };
+    const { data } = await http.get<NodeDto>(nodeUrlGet, request);
     const nodes = nodeMapper.fromDto(data);
 
     return nodes;

@@ -5,7 +5,7 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
     padding: '4px',
     borderRadius: '4px',
     '&:hover': {
-      backgroundColor: '#14191A0A',
+      // backgroundColor: '#14191A0A',
       color: '#14191A',
     },
     '&:focus': {
@@ -21,9 +21,13 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
     },
     '& .MuiInputBase-input:hover ~ fieldset': {
       borderColor: '#14191a3d',
+      backgroundColor: '#14191A0A',
     },
     '& .MuiInputBase-input:focus ~ fieldset': {
       borderColor: '#14191ab8',
+    },
+    '& .MuiInputAdornment-root .MuiButtonBase-root:hover': {
+      backgroundColor: 'transparent',
     },
   },
   '& .Mui-error': {
