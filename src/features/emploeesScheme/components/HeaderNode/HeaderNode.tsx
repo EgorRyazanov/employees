@@ -7,13 +7,16 @@ import GroupIcon from '@mui/icons-material/Group';
 import { typedMemo } from '../../../../utils/typedMemo';
 import { Node as NodeType } from '../../../../models/node';
 import { Node } from '../Node';
-import { useAppDispatch } from '../../../../hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { TransformOptionStore } from '../../../../store/transformOptions';
 import { Person } from '../../../../models/person';
 import { PersonModal } from '../PersonModal';
 import { PersonStore } from '../../../../store/person';
 import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 import styles from './HeaderNode.module.scss';
+import { filtersSelectors } from '../../../../store/filters/selectors';
+import { NodeViews } from '../../../../models/nodeVIew';
+import { EmployeeViews } from '../../../../models/EmployeeViews';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -22,6 +25,8 @@ interface NodeComponentProps {
 
 const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const dispatch = useAppDispatch();
+  const appliedLocation = useAppSelector(filtersSelectors.SelectLocation);
+  const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
 
   const [isBodyActive, setIsBodyActive] = useState(node.isDisplay);
   const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay);
@@ -88,7 +93,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
           marginTop: '24px',
         }}>
         <Box sx={{ padding: '8px 12px', backgroundColor: '#F6F6F4', borderRight: '1px solid #14191A1F' }}>
-          Брусника.Екатеринбург
+          {appliedLocation?.name}
         </Box>
         <Box sx={{ padding: '8px 12px' }}>{node.userCount} чел.</Box>
       </Box>
@@ -102,7 +107,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
               <GroupIcon sx={{ color: '#A8A19A' }} />
               <Box>
                 <Typography>Сотрудники в подразделении</Typography>
-                {node.vacancyCount !== 0 && (
+                {node.vacancyCount !== 0 && paramsOptions?.nodeViews.includes(NodeViews.Vacancies) && (
                   <Typography sx={{ color: '#A8A19A' }}>{node.vacancyCount} вакансии</Typography>
                 )}
               </Box>
@@ -113,41 +118,52 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
               {node.next.map(nextNode => (
                 <Node key={nextNode.id} node={nextNode} space={16} />
               ))}
-              <Box
-                sx={{ maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}>
-                {node.employers.map(
-                  person =>
-                    !person.isVacancy && (
-                      <Box
-                        onClick={() => handlePersonClick(person.id)}
-                        key={person.id}
-                        sx={{ padding: '8px 12px', backgroundColor: '#E8F5E9' }}>
-                        <Typography>{person.fullName}</Typography>
-                        <Typography sx={{ color: '#A8A19A' }} variant="body2">
-                          {person.position}
-                        </Typography>
-                      </Box>
-                    ),
-                )}
-              </Box>
-              <Box
-                sx={{ paddingLeft: '16px', maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}>
-                {node.employees.map(
-                  person =>
-                    !person.isVacancy && (
-                      <Box onClick={() => handlePersonClick(person.id)} key={person.id} sx={{ padding: '8px 12px' }}>
-                        <Typography>{person.fullName}</Typography>
-                        <Typography sx={{ color: '#A8A19A' }} variant="body2">
-                          {person.position}
-                        </Typography>
-                      </Box>
-                    ),
-                )}
-              </Box>
+              {paramsOptions?.nodeViews.includes(NodeViews.Employees) && (
+                <>
+                  <Box
+                    sx={{ maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}>
+                    {node.employers.map(
+                      person =>
+                        !person.isVacancy && (
+                          <Box
+                            onClick={() => handlePersonClick(person.id)}
+                            key={person.id}
+                            sx={{ padding: '8px 12px', backgroundColor: '#E8F5E9' }}>
+                            <Typography>{person.fullName}</Typography>
+                            {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
+                              <Typography sx={{ color: '#A8A19A' }} variant="body2">
+                                {person.position}
+                              </Typography>
+                            )}
+                          </Box>
+                        ),
+                    )}
+                  </Box>
+                  <Box
+                    sx={{ paddingLeft: '16px', maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}>
+                    {node.employees.map(
+                      person =>
+                        !person.isVacancy && (
+                          <Box
+                            onClick={() => handlePersonClick(person.id)}
+                            key={person.id}
+                            sx={{ padding: '8px 12px' }}>
+                            <Typography>{person.fullName}</Typography>
+                            {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
+                              <Typography sx={{ color: '#A8A19A' }} variant="body2">
+                                {person.position}
+                              </Typography>
+                            )}
+                          </Box>
+                        ),
+                    )}
+                  </Box>
+                </>
+              )}
             </Box>
           )}
           {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}

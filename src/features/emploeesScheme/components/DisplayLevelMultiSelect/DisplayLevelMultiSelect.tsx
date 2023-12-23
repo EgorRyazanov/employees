@@ -27,9 +27,13 @@ import { Action } from '../Filters/Filters';
 
 interface DisplayLevelMultiSelectComponentProps {
   action?: Action;
+  callback?: () => void;
 }
 
-const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps> = ({ action = 'initial' }) => {
+const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps> = ({
+  action = 'initial',
+  callback,
+}) => {
   const dispatch = useAppDispatch();
   const appliedLocation = useAppSelector(filtersSelectors.SelectLocation);
 
@@ -48,8 +52,8 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
             division,
           };
         });
-        setOptions(options);
         dispatch(FiltersStore.actions.changeFilterLevelDisplayed(options));
+        setOptions(options);
       }
     };
 
@@ -113,6 +117,9 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
 
   const handleSubmit = () => {
     dispatch(FiltersStore.actions.changeFilterLevelDisplayed(options));
+    if (callback != null) {
+      callback();
+    }
     handleClickToggleSelect();
   };
 

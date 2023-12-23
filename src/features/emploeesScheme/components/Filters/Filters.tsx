@@ -9,8 +9,9 @@ import { Location } from '../../../../models/location';
 import { useAppDispatch } from '../../../../hooks';
 import { FiltersStore } from '../../../../store/filters';
 import { DisplayLevelMultiSelect } from '../DisplayLevelMultiSelect';
+import { ParamsOptionsMultiSelect } from '../ParamsOptionsMultiSelect';
 
-export type Action = 'initial' | 'full';
+export type Action = 'initial' | 'full' | 'touched';
 
 const FiltersComponent = () => {
   const dispatch = useAppDispatch();
@@ -27,16 +28,13 @@ const FiltersComponent = () => {
   const handleApplyLocationFilter = useCallback(() => {
     const appliedLocation = locations.find(location => location.name === selectedLocation);
     if (appliedLocation != null) {
+      setAction('initial');
       dispatch(FiltersStore.actions.changeLocation(appliedLocation));
     }
   }, [dispatch, locations, selectedLocation]);
 
-  const onFullStructureClick = () => {
-    setAction('full');
-  };
-
-  const onInitialStructureClick = () => {
-    setAction('initial');
+  const handleChangeAction = (action: Action) => {
+    setAction(action);
   };
 
   useEffect(() => {
@@ -71,14 +69,15 @@ const FiltersComponent = () => {
           </MenuItem>
         ))}
       </SelectComponent>
-      <DisplayLevelMultiSelect action={action} />
-      <Button variant="outlined" sx={{ border: '1px solid #14191A1F' }} onClick={onInitialStructureClick}>
+      <ParamsOptionsMultiSelect action={action} callback={() => handleChangeAction('touched')} />
+      <DisplayLevelMultiSelect action={action} callback={() => handleChangeAction('touched')} />
+      <Button variant="outlined" sx={{ border: '1px solid #14191A1F' }} onClick={() => handleChangeAction('initial')}>
         Сбросить фильтры
       </Button>
       <Button
         variant="outlined"
         sx={{ border: '1px solid #14191A1F', marginLeft: 'auto' }}
-        onClick={onFullStructureClick}>
+        onClick={() => handleChangeAction('full')}>
         Развернуть структуру
       </Button>
     </Box>
