@@ -1,7 +1,6 @@
 import { enumToArray } from '../utils/enumToArray';
 
 export enum StructureEnum {
-  Location = 'Location',
   Division = 'Division',
   Group = 'Group',
   User = 'User',
@@ -10,7 +9,6 @@ export enum StructureEnum {
 
 export namespace StructureEnum {
   const TO_TITLE_MAP: Record<StructureEnum, string> = {
-    [StructureEnum.Location]: 'Локация',
     [StructureEnum.Division]: 'Подразделения',
     [StructureEnum.Group]: 'Группы',
     [StructureEnum.User]: 'Пользователи',

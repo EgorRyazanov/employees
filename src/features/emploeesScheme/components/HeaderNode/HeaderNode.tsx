@@ -23,8 +23,8 @@ interface NodeComponentProps {
 const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const dispatch = useAppDispatch();
 
-  const [isBodyActive, setIsBodyActive] = useState(false);
-  const [isNextNodesActive, setIsNextNodesActive] = useState(false);
+  const [isBodyActive, setIsBodyActive] = useState(node.isDisplay);
+  const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);

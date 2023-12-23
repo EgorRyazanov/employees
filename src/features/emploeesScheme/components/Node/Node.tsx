@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import GroupIcon from '@mui/icons-material/Group';
@@ -20,10 +20,14 @@ interface NodeComponentProps {
 
 const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const dispatch = useAppDispatch();
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
+
+  useEffect(() => {
+    setIsActive(node.isDisplay);
+  }, [node]);
 
   const handleMainNodeClick = (mainNode: NodeType) => {
     setHasMainNodeModalOpen(true);

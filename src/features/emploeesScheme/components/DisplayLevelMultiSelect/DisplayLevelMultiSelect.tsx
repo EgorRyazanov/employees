@@ -44,11 +44,12 @@ const DisplayLevelMultiSelectComponent = () => {
           };
         });
         setOptions(options);
+        dispatch(FiltersStore.actions.changeFilterLevelDisplayed(options));
       }
     };
 
     getOptions();
-  }, [appliedLocation]);
+  }, [appliedLocation, dispatch]);
 
   const handleClickToggleSelect = () => {
     setIsSelectVisible(!isSelectVisible);
