@@ -8,6 +8,8 @@ export namespace NodeApi {
   const nodeUrlGet = 'api/employee/getEmployeesByCity';
 
   export async function get(filters: NodesFilter): Promise<Node> {
+    const params = new URLSearchParams();
+    params.append('LocationName', filters.location.name);
     const filterDisplaysList = filters.displayedLevels
       .filter(filter => filter.isSelected)
       .map(filter => {
@@ -16,15 +18,14 @@ export namespace NodeApi {
           structureEnum: filter.variant,
         };
       });
-    const { data } = await http.get<NodeDto>(nodeUrlGet, {
-      params: {
-        LocationName: filters.location.name,
-        FilterDisplaysList: JSON.stringify(filterDisplaysList),
-      },
-      paramsSerializer: {
-        indexes: true, // use brackets with indexes
-      },
+
+    filterDisplaysList.forEach(filter => {
+      params.append('FilterDisplaysList', JSON.stringify(filter));
     });
+    const request = {
+      params: params,
+    };
+    const { data } = await http.get<NodeDto>(nodeUrlGet, request);
     const nodes = nodeMapper.fromDto(data);
 
     return nodes;
