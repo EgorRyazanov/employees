@@ -12,7 +12,7 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
 import { typedMemo } from '../../../../utils/typedMemo';
@@ -23,8 +23,13 @@ import { LevelDisplayedOptions } from './types';
 import { StructureEnum } from '../../../../models/structure';
 import { FiltersStore } from '../../../../store/filters';
 import { Division } from '../../../../models/division';
+import { Action } from '../Filters/Filters';
 
-const DisplayLevelMultiSelectComponent = () => {
+interface DisplayLevelMultiSelectComponentProps {
+  action?: Action;
+}
+
+const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps> = ({ action = 'initial' }) => {
   const dispatch = useAppDispatch();
   const appliedLocation = useAppSelector(filtersSelectors.SelectLocation);
 
@@ -39,7 +44,7 @@ const DisplayLevelMultiSelectComponent = () => {
           return {
             isVisible: false,
             isSelected: true,
-            variant: StructureEnum.Division,
+            variant: action === 'initial' ? StructureEnum.Division : StructureEnum.Group,
             division,
           };
         });
@@ -49,7 +54,7 @@ const DisplayLevelMultiSelectComponent = () => {
     };
 
     getOptions();
-  }, [appliedLocation, dispatch]);
+  }, [appliedLocation, action, dispatch]);
 
   const handleClickToggleSelect = () => {
     setIsSelectVisible(!isSelectVisible);

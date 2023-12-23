@@ -1,4 +1,4 @@
-import { Box, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Box, Button, MenuItem, SelectChangeEvent } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -10,9 +10,12 @@ import { useAppDispatch } from '../../../../hooks';
 import { FiltersStore } from '../../../../store/filters';
 import { DisplayLevelMultiSelect } from '../DisplayLevelMultiSelect';
 
+export type Action = 'initial' | 'full';
+
 const FiltersComponent = () => {
   const dispatch = useAppDispatch();
-  const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const [action, setAction] = useState<Action>('initial');
+  const [selectedLocation, setSelectedLocation] = useState('');
   const [locations, setLocations] = useState<readonly Location[]>([]);
 
   const handleLocationChange = (event: SelectChangeEvent<unknown>) => {
@@ -27,6 +30,14 @@ const FiltersComponent = () => {
       dispatch(FiltersStore.actions.changeLocation(appliedLocation));
     }
   }, [dispatch, locations, selectedLocation]);
+
+  const onFullStructureClick = () => {
+    setAction('full');
+  };
+
+  const onInitialStructureClick = () => {
+    setAction('initial');
+  };
 
   useEffect(() => {
     const getLocations = async () => {
@@ -60,7 +71,16 @@ const FiltersComponent = () => {
           </MenuItem>
         ))}
       </SelectComponent>
-      <DisplayLevelMultiSelect />
+      <DisplayLevelMultiSelect action={action} />
+      <Button variant="outlined" sx={{ border: '1px solid #14191A1F' }} onClick={onInitialStructureClick}>
+        Сбросить фильтры
+      </Button>
+      <Button
+        variant="outlined"
+        sx={{ border: '1px solid #14191A1F', marginLeft: 'auto' }}
+        onClick={onFullStructureClick}>
+        Развернуть структуру
+      </Button>
     </Box>
   );
 };
