@@ -13,10 +13,10 @@ import { Person } from '../../../../models/person';
 import { PersonModal } from '../PersonModal';
 import { PersonStore } from '../../../../store/person';
 import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
-import styles from './HeaderNode.module.scss';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { NodeViews } from '../../../../models/nodeVIew';
 import { EmployeeViews } from '../../../../models/EmployeeViews';
+import styles from './HeaderNode.module.scss';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -166,7 +166,9 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
               )}
             </Box>
           )}
-          {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
+          {hasPersonModalOpen && (
+            <PersonModal node={node} isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />
+          )}
         </>
       )}
       {hasMainNodeModalOpen && activeMainNode != null && (

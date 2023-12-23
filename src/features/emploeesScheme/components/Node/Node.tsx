@@ -132,7 +132,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
           )}
         </Box>
       )}
-      {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
+      {hasPersonModalOpen && <PersonModal node={node} isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
       {hasMainNodeModalOpen && activeMainNode != null && (
         <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
       )}
