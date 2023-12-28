@@ -25,7 +25,6 @@ interface NodeComponentProps {
 
 const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const dispatch = useAppDispatch();
-  const appliedLocation = useAppSelector(filtersSelectors.SelectLocation);
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
 
   const [isBodyActive, setIsBodyActive] = useState(node.isDisplay);
@@ -93,7 +92,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
           marginTop: '24px',
         }}>
         <Box sx={{ padding: '8px 12px', backgroundColor: '#F6F6F4', borderRight: '1px solid #14191A1F' }}>
-          {appliedLocation?.name}
+          {node.vacancyCount} вакансий
         </Box>
         <Box sx={{ padding: '8px 12px' }}>{node.userCount} чел.</Box>
       </Box>
