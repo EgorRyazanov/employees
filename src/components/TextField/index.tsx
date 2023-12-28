@@ -5,7 +5,7 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
     padding: '4px',
     borderRadius: '4px',
     '&:hover': {
-      // backgroundColor: '#14191A0A',
+      cursor: 'pointer',
       color: '#14191A',
     },
     '&:focus': {
