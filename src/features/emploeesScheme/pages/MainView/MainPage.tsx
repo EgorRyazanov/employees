@@ -10,6 +10,7 @@ import { HeaderNode } from '../../components/HeaderNode';
 import { Filters } from '../../components/Filters';
 import { transformOptionsSelectors } from '../../../../store/transformOptions/selectors';
 import { filtersSelectors } from '../../../../store/filters/selectors';
+import styles from './MainPage.module.scss';
 
 const NODE_SHIFT = 450;
 const NODE_PADDING = 60;
@@ -41,7 +42,7 @@ const MainPageComponent: FC = () => {
           wheelDisabled: options.wheelDisapled,
         }}>
         <Filters />
-        <TransformComponent>
+        <TransformComponent wrapperClass={styles.container}>
           <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
             {selectedLocation != null &&
               nodes?.next.map((node, index) => (

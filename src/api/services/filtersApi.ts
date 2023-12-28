@@ -8,7 +8,7 @@ import { locationMapper } from '../mappers/locationMapper';
 
 export namespace FiltersApi {
   const locationsUrl = 'api/structure/getLocations';
-  const divisionsUrl = 'api/structure/getDivisionByLocation';
+  const divisionsUrl = 'api/structure/location-data';
 
   export async function getLocations(): Promise<Location[]> {
     const { data } = await http.get<LocationDto[]>(locationsUrl);
