@@ -8,11 +8,11 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
       cursor: 'pointer',
       color: '#14191A',
     },
-    '&:focus': {
-      backgroundColor: 'white',
-    },
   },
   '& .MuiOutlinedInput-root': {
+    '&:focus': {
+      backgroundColor: '#fffff',
+    },
     '& .MuiInputBase-input ~ fieldset': {
       borderColor: '#14191A1F',
     },
