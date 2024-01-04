@@ -59,10 +59,12 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   };
 
   const handleMouseEnter = () => {
+    document.body.style.overflow = 'hidden';
     dispatch(TransformOptionStore.actions.change({ wheelDisapled: true }));
   };
 
   const handleMouseLeave = () => {
+    document.body.style.overflow = 'auto';
     dispatch(TransformOptionStore.actions.change({ wheelDisapled: false }));
   };
 

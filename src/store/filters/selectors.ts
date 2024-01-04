@@ -10,8 +10,11 @@ const SelectFilterLevelDisplayed = createSelector(root, data => data.filterLevel
 
 const SelectOptionsParams = createSelector(root, data => data.paramsOptions);
 
+const SelectPersonsFilter = createSelector(root, data => data.persons);
+
 export const filtersSelectors = {
   SelectLocation,
   SelectFilterLevelDisplayed,
   SelectOptionsParams,
+  SelectPersonsFilter,
 };

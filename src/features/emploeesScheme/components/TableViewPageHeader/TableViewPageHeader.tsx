@@ -1,14 +1,33 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { Search } from '@mui/icons-material';
 
 import { TextFieldComponent } from '../../../../components';
 import { typedMemo } from '../../../../utils/typedMemo';
-import { useAppSelector } from '../../../../hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { personsSelectors } from '../../../../store/persons/selectors';
+import { filtersSelectors } from '../../../../store/filters/selectors';
+import { FiltersStore } from '../../../../store/filters';
+
+const DELAY = 500;
 
 const TableViewPageHeaderComponent: FC = () => {
+  const dispatch = useAppDispatch();
   const isReady = useAppSelector(personsSelectors.SelectIsPersonsReady);
+  const personsFilter = useAppSelector(filtersSelectors.SelectPersonsFilter);
+
+  const [query, setQuery] = useState('');
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    const timeOutId = setTimeout(() => setSearch(query), DELAY);
+    return () => clearTimeout(timeOutId);
+  }, [query]);
+
+  useEffect(() => {
+    dispatch(FiltersStore.actions.changePersonsFilter({ ...personsFilter }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, dispatch]);
 
   return (
     <Box sx={{ marginBottom: '24px' }}>
@@ -18,6 +37,8 @@ const TableViewPageHeaderComponent: FC = () => {
           width: '300px',
         }}
         placeholder="Сотрудник"
+        value={query}
+        onChange={event => setQuery(event.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

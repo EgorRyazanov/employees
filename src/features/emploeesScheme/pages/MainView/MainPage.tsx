@@ -29,8 +29,15 @@ const MainPageComponent: FC = () => {
     }
   }, [dispatch, selectedLocation, filterDisplayedLevels]);
 
+  // useEffect(() => {
+  //   document.body.style.overflow = 'hidden';
+  //   () => {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  // },[location])
+
   return (
-    <div>
+    <Box sx={{ overflow: 'hidden' }}>
       {isLoading && <LinearProgress />}
       <TransformWrapper
         initialScale={1}
@@ -51,7 +58,7 @@ const MainPageComponent: FC = () => {
           </Box>
         </TransformComponent>
       </TransformWrapper>
-    </div>
+    </Box>
   );
 };
 
