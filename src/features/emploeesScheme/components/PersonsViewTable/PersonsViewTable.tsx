@@ -51,6 +51,11 @@ const PersonsViewTableComponent: FC = () => {
     dispatch(FiltersStore.actions.changePersonsFilter({ ...filter, pageSize: Number(event.target.value), page: 0 }));
   };
 
+  const handleClearFilters = () => {
+    scrollToTop();
+    dispatch(FiltersStore.actions.clearPersonsFilter());
+  };
+
   return (
     <>
       {isLoading && <LinearProgress />}
@@ -69,7 +74,10 @@ const PersonsViewTableComponent: FC = () => {
                 <TableCell sx={{ border: '1px solid #000' }}>Должность</TableCell>
                 <TableCell sx={{ border: '1px solid #000' }}>Тип работы</TableCell>
                 <TableCell sx={{ border: '1px solid #000' }}>
-                  <Button variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Button
+                    onClick={handleClearFilters}
+                    variant="outlined"
+                    sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Typography sx={{ fontSize: '11px', textTransform: 'none', lineHeight: '16px' }}>
                       Сбросить фильтры
                     </Typography>

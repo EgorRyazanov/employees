@@ -11,4 +11,5 @@ export const actions = {
   changeFilterLevelDisplayed: createAction<LevelDisplayedOptions[]>(`${name}/changeLevelDisplayed`),
   changeOptionsParams: createAction<ParamsOptions>(`${name}/changeParamsOptions`),
   changePersonsFilter: createAction<PersonsFilter>(`${name}/changePersonsFilter`),
+  clearPersonsFilter: createAction(`${name}/clearPersonsFilter`),
 };

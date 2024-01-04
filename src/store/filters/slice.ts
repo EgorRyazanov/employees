@@ -16,4 +16,7 @@ export const reducer = createReducer(initialState, builder => {
   builder.addCase(actions.changePersonsFilter, (state, { payload }) => {
     state.persons = payload;
   });
+  builder.addCase(actions.clearPersonsFilter, state => {
+    state.persons = initialState.persons;
+  });
 });
