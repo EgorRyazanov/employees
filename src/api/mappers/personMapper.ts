@@ -38,7 +38,7 @@ class PersonMapper implements MapperFromDto<PersonDto, Person> {
 
   public fromPersonWithMetadata(
     dto: ObjectWithMetadataDto<readonly PersonDetailsDto[]>,
-  ): ObjectWithMetadata<readonly PersonDetails[]> {
+  ): ObjectWithMetadata<PersonDetails[]> {
     return {
       users: dto.users.map(person => this.fromPersonDetailsDto(person)),
       page: dto.page,

@@ -24,7 +24,7 @@ export namespace PersonApi {
     return person;
   }
 
-  export async function getPersons(): Promise<ObjectWithMetadata<readonly PersonDetails[]>> {
+  export async function getPersons(): Promise<ObjectWithMetadata<PersonDetails[]>> {
     const { data } = await http.get<ObjectWithMetadataDto<readonly PersonDetailsDto[]>>(personsUrl);
     const persons = personMapper.fromPersonWithMetadata(data);
 
