@@ -1,4 +1,4 @@
-import { EmployeeViews } from '../../../../models/EmployeeViews';
+import { EmployeeViews } from '../../../../models/employeeViews';
 import { NodeViews } from '../../../../models/nodeVIew';
 
 export interface ParamsOptions {

@@ -14,7 +14,7 @@ import { Person } from '../../../../models/person';
 import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { NodeViews } from '../../../../models/nodeVIew';
-import { EmployeeViews } from '../../../../models/EmployeeViews';
+import { EmployeeViews } from '../../../../models/employeeViews';
 
 interface NodeComponentProps {
   node: NodeType;

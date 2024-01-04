@@ -21,20 +21,23 @@ const getMe = createAsyncThunk(`auth/getMe`, async (_, { dispatch }) => {
   }
 });
 
-const getPersonDetails = createAsyncThunk(`auth/getUserDetails`, async (userId: PersonDetails['id'], { dispatch }) => {
-  dispatch(actions.requestGettingPersonDetails());
-  try {
-    const person = await PersonApi.getUserDetails(userId);
-    dispatch(actions.successGettingPersonDetails(person));
-  } catch (error: unknown) {
-    if (isApiError(error)) {
-      const appError = AppErrorMapper.fromDto(error);
-      dispatch(actions.failureGettingPersonDetails(appError));
-    }
+const getPersonDetails = createAsyncThunk(
+  `auth/getPersonDetails`,
+  async (userId: PersonDetails['id'], { dispatch }) => {
+    dispatch(actions.requestGettingPersonDetails());
+    try {
+      const person = await PersonApi.getPersonDetails(userId);
+      dispatch(actions.successGettingPersonDetails(person));
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        const appError = AppErrorMapper.fromDto(error);
+        dispatch(actions.failureGettingPersonDetails(appError));
+      }
 
-    throw error;
-  }
-});
+      throw error;
+    }
+  },
+);
 
 export const thunks = {
   getMe,

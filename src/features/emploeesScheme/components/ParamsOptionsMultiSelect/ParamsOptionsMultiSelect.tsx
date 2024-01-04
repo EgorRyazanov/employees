@@ -20,7 +20,7 @@ import { filtersSelectors } from '../../../../store/filters/selectors';
 import { Action } from '../Filters/Filters';
 import { ParamsOptions } from './types';
 import { NodeViews } from '../../../../models/nodeVIew';
-import { EmployeeViews } from '../../../../models/EmployeeViews';
+import { EmployeeViews } from '../../../../models/employeeViews';
 import { FiltersStore } from '../../../../store/filters';
 
 interface ParamsOptionsMultiSelectComponentProps {

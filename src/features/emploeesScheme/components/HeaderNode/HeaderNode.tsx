@@ -15,7 +15,7 @@ import { PersonStore } from '../../../../store/person';
 import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { NodeViews } from '../../../../models/nodeVIew';
-import { EmployeeViews } from '../../../../models/EmployeeViews';
+import { EmployeeViews } from '../../../../models/employeeViews';
 import styles from './HeaderNode.module.scss';
 
 interface NodeComponentProps {
