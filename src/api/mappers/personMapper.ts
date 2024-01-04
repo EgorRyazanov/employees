@@ -27,6 +27,10 @@ class PersonMapper implements MapperFromDto<PersonDto, Person> {
       userNumber: dto.userNumber,
       location: dto.location,
       userPosition: dto.userPosition,
+      group: dto.group,
+      department: dto.department,
+      division: dto.division,
+      legalEntity: dto.legalEntity,
     };
   }
 }
