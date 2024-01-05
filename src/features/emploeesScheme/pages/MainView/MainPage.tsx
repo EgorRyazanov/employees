@@ -17,6 +17,7 @@ const NODE_PADDING = 60;
 
 const MainPageComponent: FC = () => {
   const dispatch = useAppDispatch();
+
   const nodes = useAppSelector(nodeSelectors.SelectNodes);
   const isLoading = useAppSelector(nodeSelectors.SelectIsNodesLoading);
   const options = useAppSelector(transformOptionsSelectors.SelectOptions);
@@ -28,13 +29,6 @@ const MainPageComponent: FC = () => {
       dispatch(NodesStore.thunks.getNodes({ location: selectedLocation, displayedLevels: filterDisplayedLevels }));
     }
   }, [dispatch, selectedLocation, filterDisplayedLevels]);
-
-  // useEffect(() => {
-  //   document.body.style.overflow = 'hidden';
-  //   () => {
-  //     document.body.style.overflow = 'auto';
-  //   }
-  // },[location])
 
   return (
     <Box sx={{ overflow: 'hidden' }}>
@@ -50,7 +44,7 @@ const MainPageComponent: FC = () => {
         }}>
         <Filters />
         <TransformComponent wrapperClass={styles.container}>
-          <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
+          <Box sx={{ width: '100vw', height: '80vh', position: 'relative' }}>
             {selectedLocation != null &&
               nodes?.next.map((node, index) => (
                 <HeaderNode key={node.id} left={index * NODE_SHIFT + NODE_PADDING} node={node} />
