@@ -132,11 +132,21 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleClickToggleSelect}>
-                {isSelectVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
+              <IconButton>{isSelectVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
             </InputAdornment>
           ),
+        }}
+      />
+      <Box
+        onClick={handleClickToggleSelect}
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: '#14191A',
+            opacity: 0.05,
+          },
         }}
       />
       {isSelectVisible && options.length > 0 && (
