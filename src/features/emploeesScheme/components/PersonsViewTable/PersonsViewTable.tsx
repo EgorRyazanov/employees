@@ -10,6 +10,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TableSortLabel,
   Typography,
 } from '@mui/material';
 import { ChangeEvent, FC, useEffect } from 'react';
@@ -23,6 +24,7 @@ import { typedMemo } from '../../../../utils/typedMemo';
 import { PAGE_SIZES } from '../../../../store/filters/initial';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { FiltersStore } from '../../../../store/filters';
+import { SortType } from '../../../../models/sortType';
 
 const PersonsViewTableComponent: FC = () => {
   const dispatch = useAppDispatch();
@@ -64,8 +66,46 @@ const PersonsViewTableComponent: FC = () => {
           <Table sx={{ border: '1px solid #000' }}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ border: '1px solid #000' }}>ФИО</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>№ позиции</TableCell>
+                <TableCell sx={{ border: '1px solid #000' }}>
+                  <TableSortLabel
+                    active={filter.fullName != null}
+                    direction={filter.fullName === SortType.Ascending ? 'asc' : 'desc'}
+                    onClick={() => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          fullName:
+                            filter.fullName === SortType.Ascending
+                              ? SortType.Descending
+                              : filter.fullName === SortType.Descending
+                              ? undefined
+                              : SortType.Ascending,
+                        }),
+                      );
+                    }}>
+                    ФИО
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell sx={{ border: '1px solid #000' }}>
+                  <TableSortLabel
+                    active={filter.userPosition != null}
+                    direction={filter.userPosition === SortType.Ascending ? 'asc' : 'desc'}
+                    onClick={() => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          userPosition:
+                            filter.userPosition === SortType.Ascending
+                              ? SortType.Descending
+                              : filter.userPosition === SortType.Descending
+                              ? undefined
+                              : SortType.Ascending,
+                        }),
+                      );
+                    }}>
+                    № позиции
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell sx={{ border: '1px solid #000' }}>ЮЛ</TableCell>
                 <TableCell sx={{ border: '1px solid #000' }}>Локация</TableCell>
                 <TableCell sx={{ border: '1px solid #000' }}>Подразделение</TableCell>

@@ -15,6 +15,7 @@ const TableViewPageHeaderComponent: FC = () => {
   const dispatch = useAppDispatch();
   const isReady = useAppSelector(personsSelectors.SelectIsPersonsReady);
   const personsFilter = useAppSelector(filtersSelectors.SelectPersonsFilter);
+  const persons = useAppSelector(personsSelectors.SelectPersons);
 
   const [query, setQuery] = useState('');
   const [search, setSearch] = useState('');
@@ -49,6 +50,11 @@ const TableViewPageHeaderComponent: FC = () => {
           ),
         }}
       />
+      {persons == null && (
+        <Typography variant="body2" sx={{ color: '#A8A19A' }}>
+          Ничего не найдено
+        </Typography>
+      )}
       {isReady && (
         <Typography variant="body2" sx={{ color: '#A8A19A' }}>
           Найдено: 0
