@@ -36,9 +36,9 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
-    setIsBodyActive(shouldShowNode);
-    setIsNextNodesActive(shouldShowNode);
-  }, [shouldShowNode]);
+    setIsBodyActive(shouldShowNode || node.isDisplay);
+    setIsNextNodesActive(shouldShowNode || node.isDisplay);
+  }, [shouldShowNode, node]);
 
   const handlePersonClick = (personId: Person['id']) => {
     setHasPersonModalOpen(true);

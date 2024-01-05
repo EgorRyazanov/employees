@@ -32,12 +32,8 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
-    setIsActive(shouldShowNode);
-  }, [shouldShowNode]);
-
-  useEffect(() => {
-    setIsActive(shouldShowNode);
-  }, [shouldShowNode]);
+    setIsActive(shouldShowNode || node.isDisplay);
+  }, [shouldShowNode, node]);
 
   const handleMainNodeClick = (mainNode: NodeType) => {
     setHasMainNodeModalOpen(true);
