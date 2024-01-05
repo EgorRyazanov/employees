@@ -9,11 +9,13 @@ export type FiltersState = {
   location: Location | null;
   filterLevelDisplayed: LevelDisplayedOptions[] | null;
   paramsOptions: ParamsOptions | null;
+  shouldShowAllNodeFields: boolean;
   persons: PersonsFilter;
 };
 
 export const initialState: FiltersState = {
   location: null,
+  shouldShowAllNodeFields: false,
   filterLevelDisplayed: null,
   paramsOptions: null,
   persons: {

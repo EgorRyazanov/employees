@@ -17,6 +17,7 @@ import { filtersSelectors } from '../../../../store/filters/selectors';
 import { NodeViews } from '../../../../models/nodeVIew';
 import { EmployeeViews } from '../../../../models/employeeViews';
 import styles from './HeaderNode.module.scss';
+import { getNodeTitle } from '../../../../utils/getNodeTitle';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -26,9 +27,10 @@ interface NodeComponentProps {
 const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const dispatch = useAppDispatch();
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
+  const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
 
-  const [isBodyActive, setIsBodyActive] = useState(node.isDisplay);
-  const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay);
+  const [isBodyActive, setIsBodyActive] = useState(node.isDisplay || shouldShowNode);
+  const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay || shouldShowNode);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
@@ -98,7 +100,14 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
       </Box>
       {isBodyActive && (
         <>
-          <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '24px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '8px',
+              alignItems: 'center',
+              marginTop: '24px',
+              marginLeft: node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0 ? 0 : '50px',
+            }}>
             {(node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0) && (
               <IconButton onClick={handleNextNodeToggle}>
                 {isNextNodesActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -107,7 +116,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <GroupIcon sx={{ color: '#A8A19A' }} />
               <Box>
-                <Typography>Сотрудники в подразделении</Typography>
+                <Typography>{getNodeTitle(node.structureEnum)}</Typography>
                 {node.vacancyCount !== 0 && paramsOptions?.nodeViews.includes(NodeViews.Vacancies) && (
                   <Typography sx={{ color: '#A8A19A' }}>{node.vacancyCount} вакансии</Typography>
                 )}

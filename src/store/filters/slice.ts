@@ -19,4 +19,7 @@ export const reducer = createReducer(initialState, builder => {
   builder.addCase(actions.clearPersonsFilter, state => {
     state.persons = initialState.persons;
   });
+  builder.addCase(actions.changeShouldShowAllField, (state, { payload }) => {
+    state.shouldShowAllNodeFields = payload;
+  });
 });

@@ -71,13 +71,22 @@ const FiltersComponent = () => {
       </SelectComponent>
       <ParamsOptionsMultiSelect action={action} callback={() => handleChangeAction('touched')} />
       <DisplayLevelMultiSelect action={action} callback={() => handleChangeAction('touched')} />
-      <Button variant="outlined" sx={{ border: '1px solid #14191A1F' }} onClick={() => handleChangeAction('initial')}>
+      <Button
+        variant="outlined"
+        sx={{ border: '1px solid #14191A1F' }}
+        onClick={() => {
+          handleChangeAction('initial');
+          dispatch(FiltersStore.actions.changeShouldShowAllField(false));
+        }}>
         Сбросить фильтры
       </Button>
       <Button
         variant="outlined"
         sx={{ border: '1px solid #14191A1F', marginLeft: 'auto' }}
-        onClick={() => handleChangeAction('full')}>
+        onClick={() => {
+          handleChangeAction('full');
+          dispatch(FiltersStore.actions.changeShouldShowAllField(true));
+        }}>
         Развернуть структуру
       </Button>
     </Box>

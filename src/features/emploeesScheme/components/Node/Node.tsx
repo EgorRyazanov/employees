@@ -24,8 +24,9 @@ interface NodeComponentProps {
 const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const dispatch = useAppDispatch();
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
+  const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
 
-  const [isActive, setIsActive] = useState(node.isDisplay);
+  const [isActive, setIsActive] = useState(node.isDisplay || shouldShowNode);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);

@@ -46,8 +46,10 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
   const [options, setOptions] = useState<ParamsOptions>(initialValues);
 
   useEffect(() => {
-    dispatch(FiltersStore.actions.changeOptionsParams(initialValues));
-    setOptions(initialValues);
+    if (action !== 'touched') {
+      dispatch(FiltersStore.actions.changeOptionsParams(initialValues));
+      setOptions(initialValues);
+    }
   }, [appliedLocation, action, dispatch]);
 
   const handleClickToggleSelect = () => {
@@ -76,6 +78,7 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
 
   const handleEmployeeViewChange = (value: EmployeeViews) => {
     const option = options.employeeViews.indexOf(value);
+    console.log(options, option, value);
 
     if (option !== -1) {
       const copiedNodeViews = [...options.employeeViews];

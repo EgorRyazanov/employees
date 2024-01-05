@@ -8,6 +8,7 @@ const name = 'filters';
 
 export const actions = {
   changeLocation: createAction<Location>(`${name}/changeLocation`),
+  changeShouldShowAllField: createAction<boolean>(`${name}/changeShouldShowAllField`),
   changeFilterLevelDisplayed: createAction<LevelDisplayedOptions[]>(`${name}/changeLevelDisplayed`),
   changeOptionsParams: createAction<ParamsOptions>(`${name}/changeParamsOptions`),
   changePersonsFilter: createAction<PersonsFilter>(`${name}/changePersonsFilter`),
