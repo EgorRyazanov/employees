@@ -1,23 +1,19 @@
-import { LevelDisplayedOptions } from '../../features/emploeesScheme/components/DisplayLevelMultiSelect/types';
-import { ParamsOptions } from '../../features/emploeesScheme/components/ParamsOptionsMultiSelect/types';
-import { Location } from '../../models/location';
-import { PersonsFilter } from '../../models/personsFIlter';
+import { STATUS } from '../../api/services/utils/status';
 
-export const PAGE_SIZES = [25, 50];
-
-export type FiltersState = {
-  location: Location | null;
-  filterLevelDisplayed: LevelDisplayedOptions[] | null;
-  paramsOptions: ParamsOptions | null;
-  persons: PersonsFilter;
+export type LocationsState = {
+  locations: string[];
+  divisions: string[];
+  departments: string[];
+  isLocationsStatus: STATUS;
+  isDivisionsStatus: STATUS;
+  isDepartmentsStatus: STATUS;
 };
 
-export const initialState: FiltersState = {
-  location: null,
-  filterLevelDisplayed: null,
-  paramsOptions: null,
-  persons: {
-    page: 1,
-    pageSize: PAGE_SIZES[0],
-  },
+export const initialState: LocationsState = {
+  locations: [],
+  divisions: [],
+  departments: [],
+  isLocationsStatus: STATUS.initial,
+  isDivisionsStatus: STATUS.initial,
+  isDepartmentsStatus: STATUS.initial,
 };

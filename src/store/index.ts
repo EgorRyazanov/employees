@@ -5,6 +5,7 @@ import { NodesStore } from './node';
 import { TransformOptionStore } from './transformOptions';
 import { FiltersStore } from './filters';
 import { PersonsStore } from './persons';
+import { LocationsStore } from './locations';
 
 const rootReducer = combineReducers({
   auth: LoginStore.reducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   filters: FiltersStore.reducer,
   transformOptions: TransformOptionStore.reducer,
   persons: PersonsStore.reducer,
+  locations: LocationsStore.reducer,
 });
 
 export const store = configureStore({
