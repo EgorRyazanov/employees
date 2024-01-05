@@ -26,14 +26,18 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
   const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
 
-  const [isActive, setIsActive] = useState(node.isDisplay || shouldShowNode);
+  const [isActive, setIsActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
-    setIsActive(node.isDisplay);
-  }, [node]);
+    setIsActive(shouldShowNode);
+  }, [shouldShowNode]);
+
+  useEffect(() => {
+    setIsActive(shouldShowNode);
+  }, [shouldShowNode]);
 
   const handleMainNodeClick = (mainNode: NodeType) => {
     setHasMainNodeModalOpen(true);
@@ -98,7 +102,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
           {node.next.map(nextNode => (
             <Node key={nextNode.id} node={nextNode} space={16} />
           ))}
-          {paramsOptions?.nodeViews.includes(NodeViews.Employees) && (
+          {(shouldShowNode || paramsOptions?.nodeViews.includes(NodeViews.Employees)) && (
             <>
               <Box
                 sx={{ maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}

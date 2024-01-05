@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import GroupIcon from '@mui/icons-material/Group';
@@ -29,11 +29,16 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
   const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
 
-  const [isBodyActive, setIsBodyActive] = useState(node.isDisplay || shouldShowNode);
-  const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay || shouldShowNode);
+  const [isBodyActive, setIsBodyActive] = useState(node.isDisplay);
+  const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
+
+  useEffect(() => {
+    setIsBodyActive(shouldShowNode);
+    setIsNextNodesActive(shouldShowNode);
+  }, [shouldShowNode]);
 
   const handlePersonClick = (personId: Person['id']) => {
     setHasPersonModalOpen(true);
@@ -128,7 +133,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
               {node.next.map(nextNode => (
                 <Node key={nextNode.id} node={nextNode} space={16} />
               ))}
-              {paramsOptions?.nodeViews.includes(NodeViews.Employees) && (
+              {(shouldShowNode || paramsOptions?.nodeViews.includes(NodeViews.Employees)) && (
                 <>
                   <Box
                     sx={{ maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}
