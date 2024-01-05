@@ -143,7 +143,7 @@ const PersonsViewTableComponent: FC = () => {
                 <TableCell sx={{ ...headerCellStyles, width: '5%' }}>ЮЛ</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <SelectComponent
-                    value={filter.locationName}
+                    value={filter.locationName ?? ''}
                     displayEmpty
                     sx={{
                       ...selectStyles,
@@ -169,9 +169,9 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                <TableCell sx={{ ...headerCellStyles, width: '10%', maxWidth: '10%' }}>
                   <SelectComponent
-                    value={filter.divisionName}
+                    value={filter.divisionName ?? ''}
                     displayEmpty
                     sx={{
                       ...selectStyles,

@@ -69,10 +69,20 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   return (
     <Box sx={{ paddingLeft: `${space ?? 0}px` }}>
       <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <IconButton onClick={handleClick}>{isActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
+        {(node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0) && (
+          <IconButton onClick={handleClick}>
+            {isActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        )}
         <Box
           onClick={() => handleMainNodeClick(node)}
-          sx={{ display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer' }}>
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            cursor: 'pointer',
+            marginLeft: node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0 ? 0 : '50px',
+          }}>
           <GroupIcon sx={{ color: '#A8A19A' }} />
           <Box>
             <Typography>{node.name}</Typography>

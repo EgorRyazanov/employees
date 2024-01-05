@@ -99,9 +99,11 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
       {isBodyActive && (
         <>
           <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '24px' }}>
-            <IconButton onClick={handleNextNodeToggle}>
-              {isNextNodesActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
+            {(node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0) && (
+              <IconButton onClick={handleNextNodeToggle}>
+                {isNextNodesActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            )}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <GroupIcon sx={{ color: '#A8A19A' }} />
               <Box>
