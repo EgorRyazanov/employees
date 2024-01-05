@@ -10,9 +10,6 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
     },
   },
   '& .MuiOutlinedInput-root': {
-    '&:focus': {
-      backgroundColor: '#fffff',
-    },
     '& .MuiInputBase-input ~ fieldset': {
       borderColor: '#14191A1F',
     },
@@ -35,7 +32,10 @@ export const TextFieldComponent = styled(TextField)<TextFieldProps>(() => ({
       borderColor: '#f26651',
     },
   },
-  '& .MuiOutlinedInput-root:hover': {
+  '& .MuiOutlinedInput-root:has(.MuiInputBase-input:focus)': {
+    backgroundColor: '#ffffff',
+  },
+  '& .MuiOutlinedInput-root:hover ': {
     '& .MuiInputBase-input:focus ~ fieldset': {
       borderColor: '#14191ab8',
     },

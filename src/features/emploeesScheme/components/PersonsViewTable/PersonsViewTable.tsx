@@ -13,7 +13,7 @@ import {
   TableSortLabel,
   Typography,
 } from '@mui/material';
-import { ChangeEvent, FC, useEffect } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -25,9 +25,13 @@ import { PAGE_SIZES } from '../../../../store/filters/initial';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { FiltersStore } from '../../../../store/filters';
 import { SortType } from '../../../../models/sortType';
+import { PersonStore } from '../../../../store/person';
+import { Person } from '../../../../models/person';
+import { PersonModal } from '../PersonModal';
 
 const PersonsViewTableComponent: FC = () => {
   const dispatch = useAppDispatch();
+  const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const isLoading = useAppSelector(personsSelectors.SelectIsPersonsLoading);
   const persons = useAppSelector(personsSelectors.SelectPersons);
   const filter = useAppSelector(filtersSelectors.SelectPersonsFilter);
@@ -56,6 +60,16 @@ const PersonsViewTableComponent: FC = () => {
   const handleClearFilters = () => {
     scrollToTop();
     dispatch(FiltersStore.actions.clearPersonsFilter());
+  };
+
+  const handlePersonClick = (personId: Person['id']) => {
+    setHasPersonModalOpen(true);
+    dispatch(PersonStore.thunks.getPersonDetails(personId));
+  };
+
+  const handleDropPerson = () => {
+    setHasPersonModalOpen(false);
+    dispatch(PersonStore.actions.dropPersonDetails());
   };
 
   return (
@@ -128,7 +142,7 @@ const PersonsViewTableComponent: FC = () => {
             </TableHead>
             <TableBody>
               {persons?.users.map((person, index) => (
-                <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableRow key={index}>
                   <TableCell>{person.fullName}</TableCell>
                   <TableCell>{person.userNumber}</TableCell>
                   <TableCell>{person.legalEntity}</TableCell>
@@ -139,7 +153,7 @@ const PersonsViewTableComponent: FC = () => {
                   <TableCell>{person.position}</TableCell>
                   <TableCell>{person.workType}</TableCell>
                   <TableCell>
-                    <Button variant="contained">
+                    <Button onClick={() => handlePersonClick(person.id)} variant="contained">
                       Подробнее <KeyboardArrowRightIcon />
                     </Button>
                   </TableCell>
@@ -161,6 +175,7 @@ const PersonsViewTableComponent: FC = () => {
             />
           </Box>
         )}
+        {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
       </Box>
     </>
   );

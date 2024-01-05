@@ -12,12 +12,13 @@ import { Node as NodeComponent } from '../Node';
 interface PersonModalComponentProps {
   isOpened: boolean;
   toggleModal: () => void;
-  node: Node;
+  node?: Node;
 }
 
 const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleModal, node }) => {
   const person = useAppSelector(personSelectors.SelectPersonDetails);
   const isLoading = useAppSelector(personSelectors.SelectIsPersonDetailsLoading);
+  const isReady = useAppSelector(personSelectors.SelectIsPersonDetailsReady);
 
   return (
     <Modal sx={{ border: 'none' }} open={isOpened} onClose={toggleModal}>
@@ -36,6 +37,7 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
           overflowY: 'auto',
         }}>
         {isLoading && <LinearProgress />}
+        {person == null && isReady && <Typography sx={{ textAlign: 'center' }}>Ничего не найдено</Typography>}
         {person != null && !isLoading && (
           <>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -65,10 +67,12 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
                 <Typography sx={{ color: '#A8A19A' }}>Телефон:</Typography>
                 <Typography>{person.phoneNumber ?? '-'}</Typography>
               </Box>
-              <Box>
-                <Typography sx={{ marginBottom: '16px' }}>Положение в структуре:</Typography>
-                <NodeComponent key={node.id} node={node} space={32} />
-              </Box>
+              {node != null && (
+                <Box>
+                  <Typography sx={{ marginBottom: '16px' }}>Положение в структуре:</Typography>
+                  <NodeComponent key={node.id} node={node} space={32} />
+                </Box>
+              )}
             </Box>
           </>
         )}
