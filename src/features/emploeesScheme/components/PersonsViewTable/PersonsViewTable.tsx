@@ -81,7 +81,7 @@ const PersonsViewTableComponent: FC = () => {
           <Table sx={{ border: '1px solid #000' }}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ border: '1px solid #000' }}>
+                <TableCell sx={{ ...headerCellStyles, width: '15%' }}>
                   <TableSortLabel
                     active={filter.fullName != null}
                     direction={filter.fullName === SortType.Ascending ? 'asc' : 'desc'}
@@ -101,7 +101,7 @@ const PersonsViewTableComponent: FC = () => {
                     ФИО
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <TableSortLabel
                     active={filter.userPosition != null}
                     direction={filter.userPosition === SortType.Ascending ? 'asc' : 'desc'}
@@ -121,13 +121,13 @@ const PersonsViewTableComponent: FC = () => {
                     № позиции
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>ЮЛ</TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>Локация</TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>Подразделение</TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>Отдел</TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>Группа</TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>Должность</TableCell>
-                <TableCell sx={{ ...headerCellStyles }}>Тип работы</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '5%' }}>ЮЛ</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Локация</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Подразделение</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Отдел</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Группа</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Должность</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Тип работы</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <Button
                     onClick={handleClearFilters}
