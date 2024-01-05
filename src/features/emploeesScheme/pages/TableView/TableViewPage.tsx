@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { typedMemo } from '../../../../utils/typedMemo';
 import { Box } from '@mui/material';
 import { TableViewPageHeader } from '../../components/TableViewPageHeader';
-import { PersonsViewTable } from '../../components/PersonsViewTable/PersonsViewTable';
+import { PersonsViewTable } from '../../components/PersonsViewTable';
 
 const TableViewComponent: FC = () => {
   return (

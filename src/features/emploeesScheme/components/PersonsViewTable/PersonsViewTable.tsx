@@ -1,7 +1,11 @@
+import CloseIcon from '@mui/icons-material/Close';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import {
   Box,
   Button,
   LinearProgress,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -14,21 +18,22 @@ import {
   Typography,
 } from '@mui/material';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import CloseIcon from '@mui/icons-material/Close';
 
+import { SelectComponent } from '../../../../components';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { Person } from '../../../../models/person';
+import { SortType } from '../../../../models/sortType';
+import { FiltersStore } from '../../../../store/filters';
+import { PAGE_SIZES } from '../../../../store/filters/initial';
+import { filtersSelectors } from '../../../../store/filters/selectors';
+import { LocationsStore } from '../../../../store/locations';
+import { locationsSelectors } from '../../../../store/locations/selectors';
+import { PersonStore } from '../../../../store/person';
 import { PersonsStore } from '../../../../store/persons';
 import { personsSelectors } from '../../../../store/persons/selectors';
 import { typedMemo } from '../../../../utils/typedMemo';
-import { PAGE_SIZES } from '../../../../store/filters/initial';
-import { filtersSelectors } from '../../../../store/filters/selectors';
-import { FiltersStore } from '../../../../store/filters';
-import { SortType } from '../../../../models/sortType';
-import { PersonStore } from '../../../../store/person';
-import { Person } from '../../../../models/person';
 import { PersonModal } from '../PersonModal';
-import { rowStyles, headerCellStyles } from './styles';
+import { headerCellStyles, rowStyles, selectStyles } from './styles';
 
 const PersonsViewTableComponent: FC = () => {
   const dispatch = useAppDispatch();
@@ -36,6 +41,7 @@ const PersonsViewTableComponent: FC = () => {
   const isLoading = useAppSelector(personsSelectors.SelectIsPersonsLoading);
   const persons = useAppSelector(personsSelectors.SelectPersons);
   const filter = useAppSelector(filtersSelectors.SelectPersonsFilter);
+  const locations = useAppSelector(locationsSelectors.SelectLocations);
 
   useEffect(() => {
     dispatch(PersonsStore.thunks.getPersons(filter));
@@ -72,6 +78,10 @@ const PersonsViewTableComponent: FC = () => {
     setHasPersonModalOpen(false);
     dispatch(PersonStore.actions.dropPersonDetails());
   };
+
+  useEffect(() => {
+    dispatch(LocationsStore.thunks.getLocations());
+  }, [dispatch]);
 
   return (
     <>
@@ -122,7 +132,33 @@ const PersonsViewTableComponent: FC = () => {
                   </TableSortLabel>
                 </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '5%' }}>ЮЛ</TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Локация</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                  <SelectComponent
+                    value={filter.locationName}
+                    displayEmpty
+                    sx={{
+                      ...selectStyles,
+                    }}
+                    fullWidth
+                    disabled={locations.length === 0}
+                    onChange={event => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          locationName: event.target.value as string,
+                        }),
+                      );
+                    }}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    renderValue={(value: any) => (value ? value : 'Локация')}
+                    IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
+                    {locations.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </SelectComponent>
+                </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Подразделение</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Отдел</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Группа</TableCell>

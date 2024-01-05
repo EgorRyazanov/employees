@@ -4,16 +4,16 @@ export type LocationsState = {
   locations: string[];
   divisions: string[];
   departments: string[];
-  isLocationsStatus: STATUS;
-  isDivisionsStatus: STATUS;
-  isDepartmentsStatus: STATUS;
+  locationsStatus: STATUS;
+  divisionsStatus: STATUS;
+  departmentsStatus: STATUS;
 };
 
 export const initialState: LocationsState = {
   locations: [],
   divisions: [],
   departments: [],
-  isLocationsStatus: STATUS.initial,
-  isDivisionsStatus: STATUS.initial,
-  isDepartmentsStatus: STATUS.initial,
+  locationsStatus: STATUS.initial,
+  divisionsStatus: STATUS.initial,
+  departmentsStatus: STATUS.initial,
 };
