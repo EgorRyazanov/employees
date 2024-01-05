@@ -9,7 +9,7 @@ class PersonsFilterMapper implements MapperToDto<PersonsFilterDto, PersonsFilter
       Page: domain.page,
       PageSize: domain.pageSize,
       LocationName: domain.locationName,
-      DivisionName: domain.departmentName,
+      DivisionName: domain.divisionName,
       DepartmentName: domain.departmentName,
       GroupName: domain.groupName,
       FullName: domain.fullName,

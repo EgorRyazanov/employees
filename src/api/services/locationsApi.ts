@@ -1,3 +1,4 @@
+import { removeEmptyValues } from '../../utils/removeEmptyValues';
 import { http } from '../http';
 
 export namespace LocationsApi {
@@ -17,9 +18,14 @@ export namespace LocationsApi {
     return data;
   }
 
-  export async function getDivisions(): Promise<string[]> {
-    const { data } = await http.get<{ divisions: string[] }>(divisionsUrl);
+  export async function getDivisions(locationName?: string): Promise<string[]> {
+    const params = {
+      LocationName: locationName,
+    };
+    const { data } = await http.get<{ divisions: { name: string }[] }>(divisionsUrl, {
+      params: removeEmptyValues(params),
+    });
 
-    return data.divisions;
+    return data.divisions.map(division => division.name);
   }
 }

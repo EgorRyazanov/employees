@@ -34,14 +34,19 @@ import { personsSelectors } from '../../../../store/persons/selectors';
 import { typedMemo } from '../../../../utils/typedMemo';
 import { PersonModal } from '../PersonModal';
 import { headerCellStyles, rowStyles, selectStyles } from './styles';
+import { STATUS } from '../../../../api/services/utils/status';
 
 const PersonsViewTableComponent: FC = () => {
   const dispatch = useAppDispatch();
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
   const isLoading = useAppSelector(personsSelectors.SelectIsPersonsLoading);
+  const isPersonsReady = useAppSelector(personsSelectors.SelectIsPersonsReady);
   const persons = useAppSelector(personsSelectors.SelectPersons);
   const filter = useAppSelector(filtersSelectors.SelectPersonsFilter);
   const locations = useAppSelector(locationsSelectors.SelectLocations);
+  const divisions = useAppSelector(locationsSelectors.SelectDivisions);
+  const locationsStatus = useAppSelector(locationsSelectors.SelectLocationsStatus);
+  const divisionsStatus = useAppSelector(locationsSelectors.SelectDivisionsStatus);
 
   useEffect(() => {
     dispatch(PersonsStore.thunks.getPersons(filter));
@@ -82,6 +87,10 @@ const PersonsViewTableComponent: FC = () => {
   useEffect(() => {
     dispatch(LocationsStore.thunks.getLocations());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(LocationsStore.thunks.getDivisions(filter.locationName));
+  }, [dispatch, filter.locationName]);
 
   return (
     <>
@@ -140,12 +149,13 @@ const PersonsViewTableComponent: FC = () => {
                       ...selectStyles,
                     }}
                     fullWidth
-                    disabled={locations.length === 0}
+                    disabled={locations.length === 0 && locationsStatus !== STATUS.success}
                     onChange={event => {
                       dispatch(
                         FiltersStore.actions.changePersonsFilter({
                           ...filter,
                           locationName: event.target.value as string,
+                          divisionName: undefined,
                         }),
                       );
                     }}
@@ -159,7 +169,33 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Подразделение</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                  <SelectComponent
+                    value={filter.divisionName}
+                    displayEmpty
+                    sx={{
+                      ...selectStyles,
+                    }}
+                    fullWidth
+                    disabled={divisions.length === 0 && divisionsStatus !== STATUS.success}
+                    onChange={event => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          divisionName: event.target.value as string,
+                        }),
+                      );
+                    }}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    renderValue={(value: any) => (value ? value : 'Подразделение')}
+                    IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
+                    {divisions.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </SelectComponent>
+                </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Отдел</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Группа</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Должность</TableCell>
@@ -202,6 +238,9 @@ const PersonsViewTableComponent: FC = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        {persons?.users.length === 0 && isPersonsReady && (
+          <Typography sx={{ textAlign: 'center', paddingTop: '8px' }}>Ничего не найдено</Typography>
+        )}
         {persons != null && (
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
             <TablePagination
