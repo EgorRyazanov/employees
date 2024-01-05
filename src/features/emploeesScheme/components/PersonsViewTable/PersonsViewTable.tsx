@@ -28,6 +28,7 @@ import { SortType } from '../../../../models/sortType';
 import { PersonStore } from '../../../../store/person';
 import { Person } from '../../../../models/person';
 import { PersonModal } from '../PersonModal';
+import { rowStyles, headerCellStyles } from './styles';
 
 const PersonsViewTableComponent: FC = () => {
   const dispatch = useAppDispatch();
@@ -120,14 +121,14 @@ const PersonsViewTableComponent: FC = () => {
                     № позиции
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>ЮЛ</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>Локация</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>Подразделение</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>Отдел</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>Группа</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>Должность</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>Тип работы</TableCell>
-                <TableCell sx={{ border: '1px solid #000' }}>
+                <TableCell sx={{ ...headerCellStyles }}>ЮЛ</TableCell>
+                <TableCell sx={{ ...headerCellStyles }}>Локация</TableCell>
+                <TableCell sx={{ ...headerCellStyles }}>Подразделение</TableCell>
+                <TableCell sx={{ ...headerCellStyles }}>Отдел</TableCell>
+                <TableCell sx={{ ...headerCellStyles }}>Группа</TableCell>
+                <TableCell sx={{ ...headerCellStyles }}>Должность</TableCell>
+                <TableCell sx={{ ...headerCellStyles }}>Тип работы</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <Button
                     onClick={handleClearFilters}
                     variant="outlined"
@@ -142,18 +143,21 @@ const PersonsViewTableComponent: FC = () => {
             </TableHead>
             <TableBody>
               {persons?.users.map((person, index) => (
-                <TableRow key={index}>
-                  <TableCell>{person.fullName}</TableCell>
-                  <TableCell>{person.userNumber}</TableCell>
-                  <TableCell>{person.legalEntity}</TableCell>
-                  <TableCell>{person.location}</TableCell>
-                  <TableCell>{person.division}</TableCell>
-                  <TableCell>{person.department}</TableCell>
-                  <TableCell>{person.group}</TableCell>
-                  <TableCell>{person.position}</TableCell>
-                  <TableCell>{person.workType}</TableCell>
-                  <TableCell>
-                    <Button onClick={() => handlePersonClick(person.id)} variant="contained">
+                <TableRow sx={{ ...rowStyles }} key={index}>
+                  <TableCell align="center">{person.fullName}</TableCell>
+                  <TableCell align="center">{person.userNumber}</TableCell>
+                  <TableCell align="center">{person.legalEntity}</TableCell>
+                  <TableCell align="center">{person.location}</TableCell>
+                  <TableCell align="center">{person.division}</TableCell>
+                  <TableCell align="center">{person.department}</TableCell>
+                  <TableCell align="center">{person.group}</TableCell>
+                  <TableCell align="center">{person.position}</TableCell>
+                  <TableCell align="center">{person.workType}</TableCell>
+                  <TableCell align="center">
+                    <Button
+                      onClick={() => handlePersonClick(person.id)}
+                      sx={{ textTransform: 'none' }}
+                      variant="contained">
                       Подробнее <KeyboardArrowRightIcon />
                     </Button>
                   </TableCell>
