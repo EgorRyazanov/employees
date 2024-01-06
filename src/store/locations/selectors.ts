@@ -10,11 +10,11 @@ const SelectDepartments = createSelector(root, data => data.departments);
 
 const SelectDivisions = createSelector(root, data => data.divisions);
 
-const SelectLocationsStatus = createSelector(root, data => data.isLocationsStatus);
+const SelectLocationsStatus = createSelector(root, data => data.locationsStatus);
 
-const SelectDepartmentsStatus = createSelector(root, data => data.isDepartmentsStatus);
+const SelectDepartmentsStatus = createSelector(root, data => data.departmentsStatus);
 
-const SelectDivisionsStatus = createSelector(root, data => data.isDivisionsStatus);
+const SelectDivisionsStatus = createSelector(root, data => data.divisionsStatus);
 
 export const locationsSelectors = {
   SelectLocations,
