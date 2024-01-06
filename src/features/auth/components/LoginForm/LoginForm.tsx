@@ -1,22 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  IconButton,
-  InputAdornment,
-  Link,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, Link, Stack, Typography, useTheme } from '@mui/material';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Controller, useForm, type Path } from 'react-hook-form';
+import { useForm, type Path } from 'react-hook-form';
 
 import { typedMemo } from '../../../../utils/typedMemo';
 import { LoginFormValue, initValues, loginFormSchema } from './LoginForm.settings';
-import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
+import { TextFieldComponent } from '../../../../components';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { authSelectors } from '../../../../store/auth/selectors';
 import { EntityValidationErrors } from '../../../../models/appError';
@@ -31,7 +21,7 @@ const LoginFormComponent: FC = () => {
 
   const theme = useTheme();
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, formState, control, setError } = useForm<LoginFormValue>({
+  const { register, handleSubmit, formState, setError } = useForm<LoginFormValue>({
     defaultValues: initValues,
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -100,18 +90,6 @@ const LoginFormComponent: FC = () => {
             }}
           />
         </Box>
-        <FormControlLabel
-          control={
-            <Controller
-              name="rememberMe"
-              control={control}
-              render={({ field: props }) => (
-                <CheckBoxComponent {...props} checked={props.value} onChange={e => props.onChange(e.target.checked)} />
-              )}
-            />
-          }
-          label={'Запомнить меня'}
-        />
       </Stack>
       <Button disabled={isLoading} sx={{ width: '100%' }} type="submit" variant="contained">
         Войти

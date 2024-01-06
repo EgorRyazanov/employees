@@ -159,8 +159,8 @@ const PersonsViewTableComponent: FC = () => {
                         }),
                       );
                     }}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    renderValue={(value: any) => (value ? value : 'Локация')}
+                     
+                    renderValue={() => 'Локация'}
                     IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
                     {locations.map((option, index) => (
                       <MenuItem key={index} value={option}>
@@ -186,8 +186,8 @@ const PersonsViewTableComponent: FC = () => {
                         }),
                       );
                     }}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    renderValue={(value: any) => (value ? value : 'Подразделение')}
+                     
+                    renderValue={() => 'Подразделение'}
                     IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
                     {divisions.map((option, index) => (
                       <MenuItem key={index} value={option}>
@@ -202,10 +202,12 @@ const PersonsViewTableComponent: FC = () => {
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Тип работы</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <Button
+                    fullWidth
                     onClick={handleClearFilters}
                     variant="outlined"
                     sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Typography sx={{ fontSize: '11px', textTransform: 'none', lineHeight: '16px' }}>
+                    <Typography
+                      sx={{ fontSize: '11px', textTransform: 'none', lineHeight: '16px', textWrap: 'nowrap' }}>
                       Сбросить фильтры
                     </Typography>
                     <CloseIcon sx={{ fontSize: '16px' }} />
@@ -219,10 +221,10 @@ const PersonsViewTableComponent: FC = () => {
                   <TableCell align="center">{person.fullName}</TableCell>
                   <TableCell align="center">{person.userNumber}</TableCell>
                   <TableCell align="center">{person.legalEntity}</TableCell>
-                  <TableCell align="center">{person.location}</TableCell>
-                  <TableCell align="center">{person.division}</TableCell>
-                  <TableCell align="center">{person.department}</TableCell>
-                  <TableCell align="center">{person.group}</TableCell>
+                  <TableCell align="center">{person.location !== '' ? person.location : 'Не указано'}</TableCell>
+                  <TableCell align="center">{person.division !== '' ? person.division : 'Не указано'}</TableCell>
+                  <TableCell align="center">{person.department !== '' ? person.department : 'Не указано'}</TableCell>
+                  <TableCell align="center">{person.group !== '' ? person.group : 'Не указано'}</TableCell>
                   <TableCell align="center">{person.position}</TableCell>
                   <TableCell align="center">{person.workType}</TableCell>
                   <TableCell align="center">
