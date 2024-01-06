@@ -13,7 +13,6 @@ const DELAY = 500;
 
 const TableViewPageHeaderComponent: FC = () => {
   const dispatch = useAppDispatch();
-  const isReady = useAppSelector(personsSelectors.SelectIsPersonsReady);
   const personsFilter = useAppSelector(filtersSelectors.SelectPersonsFilter);
   const persons = useAppSelector(personsSelectors.SelectPersons);
 
@@ -55,7 +54,7 @@ const TableViewPageHeaderComponent: FC = () => {
           Ничего не найдено
         </Typography>
       )}
-      {isReady && (
+      {persons != null && (
         <Typography variant="body2" sx={{ color: '#A8A19A' }}>
           Найдено: 0
         </Typography>
