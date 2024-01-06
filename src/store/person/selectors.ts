@@ -27,7 +27,20 @@ const SelectIsPersonDetailsReady = createSelector(
   (loading, initial) => !loading && !initial,
 );
 
+const selectNodeErrors = createSelector(root, data => data.errorPersonNode);
+
+const SelectIsPersonNodeLoading = createSelector(root, data => data.statusPersonNode === STATUS.request);
+
+const SelectIsPersonNodeInitial = createSelector(root, data => data.statusPersonNode === STATUS.initial);
+
+const SelectIsPersonNodeReady = createSelector(
+  [SelectIsPersonNodeLoading, SelectIsPersonNodeInitial],
+  (loading, initial) => !loading && !initial,
+);
+
 const SelectPersonDetails = createSelector(root, data => data.personDetails);
+
+const SelectPersonNode = createSelector(root, data => data.personNode);
 
 const selectPersonDetailsErrors = createSelector(root, data => data.errorPersonDetails);
 
@@ -42,4 +55,9 @@ export const personSelectors = {
   SelectIsPersonDetailsReady,
   SelectPersonDetails,
   selectPersonDetailsErrors,
+  SelectPersonNode,
+  SelectIsPersonNodeReady,
+  SelectIsPersonNodeLoading,
+  SelectIsPersonNodeInitial,
+  selectNodeErrors,
 };

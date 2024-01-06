@@ -181,9 +181,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
               )}
             </Box>
           )}
-          {hasPersonModalOpen && (
-            <PersonModal node={node} isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />
-          )}
+          {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
         </>
       )}
       {hasMainNodeModalOpen && activeMainNode != null && (
