@@ -45,8 +45,10 @@ const PersonsViewTableComponent: FC = () => {
   const filter = useAppSelector(filtersSelectors.SelectPersonsFilter);
   const locations = useAppSelector(locationsSelectors.SelectLocations);
   const divisions = useAppSelector(locationsSelectors.SelectDivisions);
+  const departments = useAppSelector(locationsSelectors.SelectDepartments);
   const locationsStatus = useAppSelector(locationsSelectors.SelectLocationsStatus);
   const divisionsStatus = useAppSelector(locationsSelectors.SelectDivisionsStatus);
+  const departmentsStatus = useAppSelector(locationsSelectors.SelectDepartmentsStatus);
 
   useEffect(() => {
     dispatch(PersonsStore.thunks.getPersons(filter));
@@ -89,8 +91,12 @@ const PersonsViewTableComponent: FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(LocationsStore.thunks.getDivisions(filter.locationName));
+    dispatch(LocationsStore.thunks.getDivisions({ location: filter.locationName }));
   }, [dispatch, filter.locationName]);
+
+  useEffect(() => {
+    dispatch(LocationsStore.thunks.getDepartments({ location: filter.locationName, division: filter.divisionName }));
+  }, [dispatch, filter.locationName, filter.divisionName]);
 
   return (
     <>
@@ -159,7 +165,6 @@ const PersonsViewTableComponent: FC = () => {
                         }),
                       );
                     }}
-                     
                     renderValue={() => 'Локация'}
                     IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
                     {locations.map((option, index) => (
@@ -169,9 +174,9 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%', maxWidth: '10%' }}>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <SelectComponent
-                    value={filter.divisionName ?? ''}
+                    value={filter.divisionName}
                     displayEmpty
                     sx={{
                       ...selectStyles,
@@ -183,10 +188,10 @@ const PersonsViewTableComponent: FC = () => {
                         FiltersStore.actions.changePersonsFilter({
                           ...filter,
                           divisionName: event.target.value as string,
+                          departmentName: undefined,
                         }),
                       );
                     }}
-                     
                     renderValue={() => 'Подразделение'}
                     IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
                     {divisions.map((option, index) => (
@@ -196,7 +201,32 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Отдел</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                  <SelectComponent
+                    value={filter.departmentName}
+                    displayEmpty
+                    sx={{
+                      ...selectStyles,
+                    }}
+                    fullWidth
+                    disabled={departments.length === 0 && departmentsStatus !== STATUS.success}
+                    onChange={event => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          departmentName: event.target.value as string,
+                        }),
+                      );
+                    }}
+                    renderValue={() => 'Отделы'}
+                    IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
+                    {departments.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </SelectComponent>
+                </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Группа</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Должность</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Тип работы</TableCell>

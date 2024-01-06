@@ -1,6 +1,14 @@
 import { removeEmptyValues } from '../../utils/removeEmptyValues';
 import { http } from '../http';
 
+export type Division = {
+  readonly division?: string;
+};
+
+export type Location = {
+  readonly location?: string;
+};
+
 export namespace LocationsApi {
   const locationsUrl = 'api/employee/locations-names';
   const departmentsUrl = 'api/employee/departments-names';
@@ -12,15 +20,19 @@ export namespace LocationsApi {
     return data;
   }
 
-  export async function getDepartments(): Promise<string[]> {
-    const { data } = await http.get<string[]>(departmentsUrl);
+  export async function getDepartments(departmentsOptions: Division & Location): Promise<string[]> {
+    const params = {
+      LocationName: departmentsOptions.location,
+      DivisonNames: departmentsOptions.division,
+    };
+    const { data } = await http.get<string[]>(departmentsUrl, { params: removeEmptyValues(params) });
 
     return data;
   }
 
-  export async function getDivisions(locationName?: string): Promise<string[]> {
+  export async function getDivisions(divisionOption: Location): Promise<string[]> {
     const params = {
-      LocationName: locationName,
+      LocationName: divisionOption.location,
     };
     const { data } = await http.get<{ divisions: { name: string }[] }>(divisionsUrl, {
       params: removeEmptyValues(params),
