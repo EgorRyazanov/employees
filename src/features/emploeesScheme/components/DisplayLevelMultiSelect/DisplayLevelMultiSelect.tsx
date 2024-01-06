@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { FiltersApi } from '../../../../api/services/filtersApi';
 import { LevelDisplayedOptions } from './types';
-import { StructureEnum } from '../../../../models/structure';
+import { Structure } from '../../../../models/structure';
 import { FiltersStore } from '../../../../store/filters';
 import { Division } from '../../../../models/division';
 import { Action } from '../Filters/Filters';
@@ -42,18 +42,18 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
 
   useEffect(() => {
     const getOptions = async () => {
-      if (appliedLocation != null) {
+      if (appliedLocation != null && action !== 'touched') {
         const divisions = await FiltersApi.getDivisions(appliedLocation);
-        const options = divisions.map(division => {
+        const newOptions = divisions.map(division => {
           return {
             isVisible: false,
             isSelected: true,
-            variant: action === 'initial' ? StructureEnum.Division : StructureEnum.Group,
+            variant: action === 'initial' ? Structure.Division : Structure.Group,
             division,
           };
         });
-        dispatch(FiltersStore.actions.changeFilterLevelDisplayed(options));
-        setOptions(options);
+        dispatch(FiltersStore.actions.changeFilterLevelDisplayed(newOptions));
+        setOptions(newOptions);
       }
     };
 
@@ -99,7 +99,7 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
     }
   };
 
-  const handleChangeVariant = (id: Division['id'], variant: StructureEnum) => {
+  const handleChangeVariant = (id: Division['id'], variant: Structure) => {
     const copiedOptions = [...options];
     const selectedOption = copiedOptions.find(option => option.division.id === id);
     if (selectedOption != null && selectedOption.isSelected) {
@@ -117,6 +117,7 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
 
   const handleSubmit = () => {
     dispatch(FiltersStore.actions.changeFilterLevelDisplayed(options));
+    dispatch(FiltersStore.actions.changeShouldShowAllField(false));
     if (callback != null) {
       callback();
     }
@@ -132,11 +133,21 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleClickToggleSelect}>
-                {isSelectVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
+              <IconButton>{isSelectVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
             </InputAdornment>
           ),
+        }}
+      />
+      <Box
+        onClick={handleClickToggleSelect}
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: '#14191A',
+            opacity: 0.05,
+          },
         }}
       />
       {isSelectVisible && options.length > 0 && (
@@ -174,15 +185,13 @@ const DisplayLevelMultiSelectComponent: FC<DisplayLevelMultiSelectComponentProps
                       <RadioGroup
                         name={option.division.name}
                         value={option.variant}
-                        onChange={event =>
-                          handleChangeVariant(option.division.id, event.target.value as StructureEnum)
-                        }>
-                        {StructureEnum.toArray().map((variant, index) => (
+                        onChange={event => handleChangeVariant(option.division.id, event.target.value as Structure)}>
+                        {Structure.toArray().map((variant, index) => (
                           <FormControlLabel
                             key={index}
                             value={variant}
                             control={<Radio />}
-                            label={StructureEnum.toReadable(variant)}
+                            label={Structure.toReadable(variant)}
                           />
                         ))}
                       </RadioGroup>

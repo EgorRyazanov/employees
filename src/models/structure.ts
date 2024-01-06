@@ -1,25 +1,25 @@
 import { enumToArray } from '../utils/enumToArray';
 
-export enum StructureEnum {
+export enum Structure {
   Division = 'Division',
   Group = 'Group',
   User = 'User',
   Department = 'Department',
 }
 
-export namespace StructureEnum {
-  const TO_TITLE_MAP: Record<StructureEnum, string> = {
-    [StructureEnum.Division]: 'Подразделения',
-    [StructureEnum.Group]: 'Группы',
-    [StructureEnum.User]: 'Пользователи',
-    [StructureEnum.Department]: 'Отдел',
+export namespace Structure {
+  const TO_TITLE_MAP: Record<Structure, string> = {
+    [Structure.Division]: 'Подразделения',
+    [Structure.Group]: 'Группы',
+    [Structure.User]: 'Пользователи',
+    [Structure.Department]: 'Отдел',
   };
 
-  export function toReadable(value: StructureEnum): string {
+  export function toReadable(value: Structure): string {
     return TO_TITLE_MAP[value];
   }
 
-  export function toArray(): StructureEnum[] {
-    return enumToArray(StructureEnum);
+  export function toArray(): Structure[] {
+    return enumToArray(Structure);
   }
 }

@@ -14,7 +14,7 @@ import { Person } from '../../../../models/person';
 import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import { NodeViews } from '../../../../models/nodeVIew';
-import { EmployeeViews } from '../../../../models/EmployeeViews';
+import { EmployeeViews } from '../../../../models/employeeViews';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -24,6 +24,7 @@ interface NodeComponentProps {
 const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const dispatch = useAppDispatch();
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
+  const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
 
   const [isActive, setIsActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
@@ -31,8 +32,8 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
-    setIsActive(node.isDisplay);
-  }, [node]);
+    setIsActive(shouldShowNode || node.isDisplay);
+  }, [shouldShowNode, node]);
 
   const handleMainNodeClick = (mainNode: NodeType) => {
     setHasMainNodeModalOpen(true);
@@ -69,10 +70,20 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
   return (
     <Box sx={{ paddingLeft: `${space ?? 0}px` }}>
       <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-        <IconButton onClick={handleClick}>{isActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
+        {(node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0) && (
+          <IconButton onClick={handleClick}>
+            {isActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        )}
         <Box
           onClick={() => handleMainNodeClick(node)}
-          sx={{ display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer' }}>
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            cursor: 'pointer',
+            marginLeft: node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0 ? 0 : '50px',
+          }}>
           <GroupIcon sx={{ color: '#A8A19A' }} />
           <Box>
             <Typography>{node.name}</Typography>
@@ -87,7 +98,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
           {node.next.map(nextNode => (
             <Node key={nextNode.id} node={nextNode} space={16} />
           ))}
-          {paramsOptions?.nodeViews.includes(NodeViews.Employees) && (
+          {(shouldShowNode || paramsOptions?.nodeViews.includes(NodeViews.Employees)) && (
             <>
               <Box
                 sx={{ maxHeight: '280px', overflowY: 'auto', cursor: 'pointer' }}
@@ -132,7 +143,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
           )}
         </Box>
       )}
-      {hasPersonModalOpen && <PersonModal node={node} isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
+      {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
       {hasMainNodeModalOpen && activeMainNode != null && (
         <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
       )}

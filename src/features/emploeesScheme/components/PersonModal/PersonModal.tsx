@@ -6,18 +6,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import { typedMemo } from '../../../../utils/typedMemo';
 import { useAppSelector } from '../../../../hooks';
 import { personSelectors } from '../../../../store/person/selectors';
-import { Node } from '../../../../models/node';
 import { Node as NodeComponent } from '../Node';
 
 interface PersonModalComponentProps {
   isOpened: boolean;
   toggleModal: () => void;
-  node: Node;
 }
 
-const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleModal, node }) => {
+const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleModal }) => {
   const person = useAppSelector(personSelectors.SelectPersonDetails);
-  const isLoading = useAppSelector(personSelectors.SelectIsPersonDetailsLoading);
+  const node = useAppSelector(personSelectors.SelectPersonNode);
+  const isPersonLoading = useAppSelector(personSelectors.SelectIsPersonDetailsLoading);
+  const isPersonReady = useAppSelector(personSelectors.SelectIsPersonDetailsReady);
+  const isNodeLoading = useAppSelector(personSelectors.SelectIsPersonNodeLoading);
+  const isNodeReady = useAppSelector(personSelectors.SelectIsPersonNodeReady);
 
   return (
     <Modal sx={{ border: 'none' }} open={isOpened} onClose={toggleModal}>
@@ -35,8 +37,11 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
           maxHeight: 'calc(100vh - 128px)',
           overflowY: 'auto',
         }}>
-        {isLoading && <LinearProgress />}
-        {person != null && !isLoading && (
+        {isPersonLoading && <LinearProgress />}
+        {(person == null || node == null) && isPersonReady && isNodeReady && (
+          <Typography sx={{ textAlign: 'center' }}>Ничего не найдено</Typography>
+        )}
+        {person != null && !isPersonLoading && node != null && !isNodeLoading && (
           <>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <Typography>{person.fullName}</Typography>
@@ -67,7 +72,7 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
               </Box>
               <Box>
                 <Typography sx={{ marginBottom: '16px' }}>Положение в структуре:</Typography>
-                <NodeComponent key={node.id} node={node} space={32} />
+                <NodeComponent node={node} />
               </Box>
             </Box>
           </>

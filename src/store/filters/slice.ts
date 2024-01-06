@@ -13,4 +13,13 @@ export const reducer = createReducer(initialState, builder => {
   builder.addCase(actions.changeOptionsParams, (state, { payload }) => {
     state.paramsOptions = payload;
   });
+  builder.addCase(actions.changePersonsFilter, (state, { payload }) => {
+    state.persons = payload;
+  });
+  builder.addCase(actions.clearPersonsFilter, state => {
+    state.persons = initialState.persons;
+  });
+  builder.addCase(actions.changeShouldShowAllField, (state, { payload }) => {
+    state.shouldShowAllNodeFields = payload;
+  });
 });

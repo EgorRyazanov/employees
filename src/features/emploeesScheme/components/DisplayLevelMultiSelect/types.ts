@@ -1,9 +1,9 @@
 import { Division } from '../../../../models/division';
-import { StructureEnum } from '../../../../models/structure';
+import { Structure } from '../../../../models/structure';
 
 export interface LevelDisplayedOptions {
   division: Division;
-  variant: StructureEnum;
+  variant: Structure;
   isSelected: boolean;
   isVisible: boolean;
 }

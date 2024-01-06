@@ -31,5 +31,18 @@ export const reducer = createReducer(initialState, builder => {
   });
   builder.addCase(actions.dropPersonDetails, state => {
     state.personDetails = null;
+    state.personNode = null;
+  });
+  builder.addCase(actions.requestGettingPersonNode, state => {
+    state.statusPersonNode = STATUS.request;
+  });
+  builder.addCase(actions.successGettingPersonNode, (state, { payload: user }) => {
+    state.personNode = user;
+    state.statusPersonNode = STATUS.success;
+    state.errorPersonNode = initialState.errorPersonNode;
+  });
+  builder.addCase(actions.failureGettingPersonNode, (state, { payload: error }) => {
+    state.statusPersonNode = STATUS.failure;
+    state.errorPersonNode = error;
   });
 });

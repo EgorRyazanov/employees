@@ -1,0 +1,1 @@
+export { PersonsViewTable } from './PersonsViewTable';
