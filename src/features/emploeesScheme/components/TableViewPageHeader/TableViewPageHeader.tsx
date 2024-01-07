@@ -25,7 +25,7 @@ const TableViewPageHeaderComponent: FC = () => {
   }, [query]);
 
   useEffect(() => {
-    dispatch(FiltersStore.actions.changePersonsFilter({ ...personsFilter, UserFullName: search }));
+    dispatch(FiltersStore.actions.changePersonsFilter({ ...personsFilter, userFullName: search }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, dispatch]);
 

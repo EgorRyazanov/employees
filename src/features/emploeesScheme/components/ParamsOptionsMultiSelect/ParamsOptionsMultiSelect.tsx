@@ -78,7 +78,6 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
 
   const handleEmployeeViewChange = (value: EmployeeViews) => {
     const option = options.employeeViews.indexOf(value);
-    console.log(options, option, value);
 
     if (option !== -1) {
       const copiedNodeViews = [...options.employeeViews];

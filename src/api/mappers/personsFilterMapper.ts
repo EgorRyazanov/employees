@@ -16,7 +16,7 @@ class PersonsFilterMapper implements MapperToDto<PersonsFilterDto, PersonsFilter
       UserNumber: domain.userNumber,
       UserPosition: domain.userPosition,
       WorkType: domain.workType,
-      UserFullName: domain.UserFullName,
+      UserFullName: domain.userFullName,
     };
 
     return removeEmptyValues(filterDto);

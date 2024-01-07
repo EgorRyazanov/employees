@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { actions } from './actions';
-import { Division, Location, LocationsApi } from '../../api/services/locationsApi';
+import { Department, Division, Location, LocationsApi } from '../../api/services/locationsApi';
 import { STATUS } from '../../api/services/utils/status';
 
 const getLocations = createAsyncThunk(`auth/getLocations`, async (_, { dispatch }) => {
@@ -43,8 +43,24 @@ const getDivisions = createAsyncThunk(`auth/getDivisions`, async (divisionOption
   }
 });
 
+const getGroups = createAsyncThunk(
+  `auth/getGroups`,
+  async (groupsOptions: Location & Division & Department, { dispatch }) => {
+    dispatch(actions.changeGroupsStatus(STATUS.request));
+    try {
+      const divisions = await LocationsApi.getGroups(groupsOptions);
+      dispatch(actions.getGroups(divisions));
+    } catch (error: unknown) {
+      dispatch(actions.changeGroupsStatus(STATUS.failure));
+
+      throw error;
+    }
+  },
+);
+
 export const thunks = {
   getLocations,
   getDepartments,
   getDivisions,
+  getGroups,
 };

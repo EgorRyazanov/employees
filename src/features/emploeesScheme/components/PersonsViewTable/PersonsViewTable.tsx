@@ -46,9 +46,11 @@ const PersonsViewTableComponent: FC = () => {
   const locations = useAppSelector(locationsSelectors.SelectLocations);
   const divisions = useAppSelector(locationsSelectors.SelectDivisions);
   const departments = useAppSelector(locationsSelectors.SelectDepartments);
+  const groups = useAppSelector(locationsSelectors.SelectGroup);
   const locationsStatus = useAppSelector(locationsSelectors.SelectLocationsStatus);
   const divisionsStatus = useAppSelector(locationsSelectors.SelectDivisionsStatus);
   const departmentsStatus = useAppSelector(locationsSelectors.SelectDepartmentsStatus);
+  const groupsStatus = useAppSelector(locationsSelectors.SelectGroupStatus);
 
   useEffect(() => {
     dispatch(PersonsStore.thunks.getPersons(filter));
@@ -67,8 +69,9 @@ const PersonsViewTableComponent: FC = () => {
   };
 
   const handleItemsPerPageChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    console.log(event);
     scrollToTop();
-    dispatch(FiltersStore.actions.changePersonsFilter({ ...filter, pageSize: Number(event.target.value), page: 0 }));
+    dispatch(FiltersStore.actions.changePersonsFilter({ ...filter, pageSize: Number(event.target.value), page: 1 }));
   };
 
   const handleClearFilters = () => {
@@ -97,6 +100,16 @@ const PersonsViewTableComponent: FC = () => {
   useEffect(() => {
     dispatch(LocationsStore.thunks.getDepartments({ location: filter.locationName, division: filter.divisionName }));
   }, [dispatch, filter.locationName, filter.divisionName]);
+
+  useEffect(() => {
+    dispatch(
+      LocationsStore.thunks.getGroups({
+        location: filter.locationName,
+        division: filter.divisionName,
+        department: filter.departmentName,
+      }),
+    );
+  }, [dispatch, filter.locationName, filter.divisionName, filter.departmentName]);
 
   return (
     <>
@@ -162,6 +175,8 @@ const PersonsViewTableComponent: FC = () => {
                           ...filter,
                           locationName: event.target.value as string,
                           divisionName: undefined,
+                          departmentName: undefined,
+                          groupName: undefined,
                         }),
                       );
                     }}
@@ -176,19 +191,20 @@ const PersonsViewTableComponent: FC = () => {
                 </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <SelectComponent
-                    value={filter.divisionName}
+                    value={filter.divisionName ?? ''}
                     displayEmpty
                     sx={{
                       ...selectStyles,
                     }}
                     fullWidth
-                    disabled={divisions.length === 0 && divisionsStatus !== STATUS.success}
+                    disabled={divisions.length === 0 || divisionsStatus !== STATUS.success}
                     onChange={event => {
                       dispatch(
                         FiltersStore.actions.changePersonsFilter({
                           ...filter,
                           divisionName: event.target.value as string,
                           departmentName: undefined,
+                          groupName: undefined,
                         }),
                       );
                     }}
@@ -203,18 +219,19 @@ const PersonsViewTableComponent: FC = () => {
                 </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <SelectComponent
-                    value={filter.departmentName}
+                    value={filter.departmentName ?? ''}
                     displayEmpty
                     sx={{
                       ...selectStyles,
                     }}
                     fullWidth
-                    disabled={departments.length === 0 && departmentsStatus !== STATUS.success}
+                    disabled={departments.length === 0 || departmentsStatus !== STATUS.success}
                     onChange={event => {
                       dispatch(
                         FiltersStore.actions.changePersonsFilter({
                           ...filter,
                           departmentName: event.target.value as string,
+                          groupName: undefined,
                         }),
                       );
                     }}
@@ -227,7 +244,32 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Группа</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                  <SelectComponent
+                    value={filter.groupName ?? ''}
+                    displayEmpty
+                    sx={{
+                      ...selectStyles,
+                    }}
+                    fullWidth
+                    disabled={groups.length === 0 || groupsStatus !== STATUS.success}
+                    onChange={event => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          groupName: event.target.value as string,
+                        }),
+                      );
+                    }}
+                    renderValue={() => 'Группы'}
+                    IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
+                    {groups.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </SelectComponent>
+                </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Должность</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Тип работы</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
