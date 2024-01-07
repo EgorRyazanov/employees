@@ -47,10 +47,12 @@ const PersonsViewTableComponent: FC = () => {
   const divisions = useAppSelector(locationsSelectors.SelectDivisions);
   const departments = useAppSelector(locationsSelectors.SelectDepartments);
   const groups = useAppSelector(locationsSelectors.SelectGroup);
+  const userPositions = useAppSelector(locationsSelectors.SelectUserPositions);
   const locationsStatus = useAppSelector(locationsSelectors.SelectLocationsStatus);
   const divisionsStatus = useAppSelector(locationsSelectors.SelectDivisionsStatus);
   const departmentsStatus = useAppSelector(locationsSelectors.SelectDepartmentsStatus);
   const groupsStatus = useAppSelector(locationsSelectors.SelectGroupStatus);
+  const userPositionsStatus = useAppSelector(locationsSelectors.SelectUserPositionsStatus);
 
   useEffect(() => {
     dispatch(PersonsStore.thunks.getPersons(filter));
@@ -110,6 +112,17 @@ const PersonsViewTableComponent: FC = () => {
       }),
     );
   }, [dispatch, filter.locationName, filter.divisionName, filter.departmentName]);
+
+  useEffect(() => {
+    dispatch(
+      LocationsStore.thunks.getUserPositions({
+        location: filter.locationName,
+        division: filter.divisionName,
+        department: filter.departmentName,
+        group: filter.groupName,
+      }),
+    );
+  }, [dispatch, filter.locationName, filter.divisionName, filter.departmentName, filter.groupName]);
 
   return (
     <>
@@ -235,7 +248,7 @@ const PersonsViewTableComponent: FC = () => {
                         }),
                       );
                     }}
-                    renderValue={() => 'Отделы'}
+                    renderValue={() => 'Отдел'}
                     IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
                     {departments.map((option, index) => (
                       <MenuItem key={index} value={option}>
@@ -261,7 +274,7 @@ const PersonsViewTableComponent: FC = () => {
                         }),
                       );
                     }}
-                    renderValue={() => 'Группы'}
+                    renderValue={() => 'Группа'}
                     IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
                     {groups.map((option, index) => (
                       <MenuItem key={index} value={option}>
@@ -270,7 +283,31 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Должность</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                  <SelectComponent
+                    value={filter.userPosition ?? ''}
+                    displayEmpty
+                    sx={{
+                      ...selectStyles,
+                    }}
+                    fullWidth
+                    disabled={userPositions.length === 0 || userPositionsStatus !== STATUS.success}
+                    onChange={() => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                        }),
+                      );
+                    }}
+                    renderValue={() => 'Должность'}
+                    IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
+                    {userPositions.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </SelectComponent>
+                </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Тип работы</TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <Button

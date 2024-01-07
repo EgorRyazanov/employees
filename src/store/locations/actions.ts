@@ -8,8 +8,10 @@ export const actions = {
   changeDepartmentsStatus: createAction<STATUS>(`${name}/changeDepartmentsStatus`),
   changeDivisionsStatus: createAction<STATUS>(`${name}/changeDivisionsStatus`),
   changeGroupsStatus: createAction<STATUS>(`${name}/changeGroupsStatus`),
+  changeUserPositionsStatus: createAction<STATUS>(`${name}/changeUserPositionsStatus`),
   getLocations: createAction<string[]>(`${name}/getLocations`),
   getDepartments: createAction<string[]>(`${name}/getDepartments`),
   getDivisions: createAction<string[]>(`${name}/getDivisions`),
   getGroups: createAction<string[]>(`${name}/getGroups`),
+  getUsersPositions: createAction<string[]>(`${name}/getUserPositions`),
 };

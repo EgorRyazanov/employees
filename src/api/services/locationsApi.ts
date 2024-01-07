@@ -13,11 +13,16 @@ export type Department = {
   readonly department?: string;
 };
 
+export type Group = {
+  readonly group?: string;
+};
+
 export namespace LocationsApi {
   const locationsUrl = 'api/employee/locations-names';
   const departmentsUrl = 'api/employee/departments-names';
   const divisionsUrl = 'api/employee/divisions-names';
   const groupsUrl = 'api/employee/groups-names';
+  const userPositionsUrl = 'api/employee/users-positions';
 
   export async function getLocations(): Promise<string[]> {
     const { data } = await http.get<string[]>(locationsUrl);
@@ -53,6 +58,22 @@ export namespace LocationsApi {
       DepartmentName: groupOptions.department,
     };
     const { data } = await http.get<string[]>(groupsUrl, {
+      params: removeEmptyValues(params),
+    });
+
+    return data;
+  }
+
+  export async function getUsersPositions(
+    positionsOptions: Division & Location & Department & Group,
+  ): Promise<string[]> {
+    const params = {
+      LocationName: positionsOptions.location,
+      DivisonNames: positionsOptions.division,
+      DepartmentName: positionsOptions.department,
+      GroupName: positionsOptions.group,
+    };
+    const { data } = await http.get<string[]>(userPositionsUrl, {
       params: removeEmptyValues(params),
     });
 

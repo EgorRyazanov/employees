@@ -14,6 +14,9 @@ export const reducer = createReducer(initialState, builder => {
   builder.addCase(actions.changeDivisionsStatus, (state, { payload }) => {
     state.divisionsStatus = payload;
   });
+  builder.addCase(actions.changeUserPositionsStatus, (state, { payload }) => {
+    state.userPositionsStatus = payload;
+  });
   builder.addCase(actions.changeGroupsStatus, (state, { payload }) => {
     state.groupsStatus = payload;
   });
@@ -32,5 +35,9 @@ export const reducer = createReducer(initialState, builder => {
   builder.addCase(actions.getGroups, (state, { payload }) => {
     state.groups = payload;
     state.groupsStatus = STATUS.success;
+  });
+  builder.addCase(actions.getUsersPositions, (state, { payload }) => {
+    state.userPositions = payload;
+    state.userPositionsStatus = STATUS.success;
   });
 });

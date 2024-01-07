@@ -37,7 +37,7 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
           maxHeight: 'calc(100vh - 128px)',
           overflowY: 'auto',
         }}>
-        {isPersonLoading && <LinearProgress />}
+        {(isPersonLoading || isNodeLoading) && <LinearProgress />}
         {(person == null || node == null) && isPersonReady && isNodeReady && (
           <Typography sx={{ textAlign: 'center' }}>Ничего не найдено</Typography>
         )}
