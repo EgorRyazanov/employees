@@ -20,7 +20,7 @@ import { filtersSelectors } from '../../../../store/filters/selectors';
 import { Action } from '../Filters/Filters';
 import { ParamsOptions } from './types';
 import { NodeViews } from '../../../../models/nodeVIew';
-import { EmployeeViews } from '../../../../models/EmployeeViews';
+import { EmployeeViews } from '../../../../models/employeeViews';
 import { FiltersStore } from '../../../../store/filters';
 
 interface ParamsOptionsMultiSelectComponentProps {
@@ -46,8 +46,10 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
   const [options, setOptions] = useState<ParamsOptions>(initialValues);
 
   useEffect(() => {
-    dispatch(FiltersStore.actions.changeOptionsParams(initialValues));
-    setOptions(initialValues);
+    if (action !== 'touched') {
+      dispatch(FiltersStore.actions.changeOptionsParams(initialValues));
+      setOptions(initialValues);
+    }
   }, [appliedLocation, action, dispatch]);
 
   const handleClickToggleSelect = () => {
@@ -95,11 +97,21 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleClickToggleSelect}>
-                {isSelectVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
+              <IconButton>{isSelectVisible ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
             </InputAdornment>
           ),
+        }}
+      />
+      <Box
+        onClick={handleClickToggleSelect}
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: '#14191A',
+            opacity: 0.05,
+          },
         }}
       />
       {isSelectVisible && (

@@ -17,6 +17,7 @@ const NODE_PADDING = 60;
 
 const MainPageComponent: FC = () => {
   const dispatch = useAppDispatch();
+
   const nodes = useAppSelector(nodeSelectors.SelectNodes);
   const isLoading = useAppSelector(nodeSelectors.SelectIsNodesLoading);
   const options = useAppSelector(transformOptionsSelectors.SelectOptions);
@@ -30,7 +31,7 @@ const MainPageComponent: FC = () => {
   }, [dispatch, selectedLocation, filterDisplayedLevels]);
 
   return (
-    <div>
+    <Box sx={{ overflow: 'hidden' }}>
       {isLoading && <LinearProgress />}
       <TransformWrapper
         initialScale={1}
@@ -43,7 +44,7 @@ const MainPageComponent: FC = () => {
         }}>
         <Filters />
         <TransformComponent wrapperClass={styles.container}>
-          <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
+          <Box sx={{ width: '100vw', height: '80vh', position: 'relative' }}>
             {selectedLocation != null &&
               nodes?.next.map((node, index) => (
                 <HeaderNode key={node.id} left={index * NODE_SHIFT + NODE_PADDING} node={node} />
@@ -51,7 +52,7 @@ const MainPageComponent: FC = () => {
           </Box>
         </TransformComponent>
       </TransformWrapper>
-    </div>
+    </Box>
   );
 };
 
