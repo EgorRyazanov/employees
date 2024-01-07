@@ -19,10 +19,11 @@ import { getNodeTitle } from '../../../../utils/getNodeTitle';
 
 interface NodeComponentProps {
   node: NodeType;
+  activePersonId?: Person['id'];
   space?: number;
 }
 
-const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
+const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) => {
   const dispatch = useAppDispatch();
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
   const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
@@ -124,7 +125,6 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
                   maxHeight: '280px',
                   overflowY: 'auto',
                   cursor: 'pointer',
-                  paddingLeft: `${space ?? 0}px`,
                   backgroundColor: '#E8F5E9',
                 }}
                 onMouseEnter={handleMouseEnter}
@@ -132,13 +132,21 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
                 {node.employers.map(
                   person =>
                     !person.isVacancy && (
-                      <Box onClick={() => handlePersonClick(person.id)} key={person.id} sx={{ padding: '8px 24px' }}>
-                        <Typography>{person.fullName}</Typography>
-                        {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
-                          <Typography sx={{ color: '#A8A19A' }} variant="body2">
-                            {person.position}
-                          </Typography>
-                        )}
+                      <Box
+                        onClick={() => handlePersonClick(person.id)}
+                        key={person.id}
+                        sx={{
+                          paddingLeft: `${space ?? 0}px`,
+                          backgroundColor: activePersonId === person.id ? '#cfedf5' : undefined,
+                        }}>
+                        <Box sx={{ padding: '8px 24px' }}>
+                          <Typography>{person.fullName}</Typography>
+                          {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
+                            <Typography sx={{ color: '#A8A19A' }} variant="body2">
+                              {person.position}
+                            </Typography>
+                          )}
+                        </Box>
                       </Box>
                     ),
                 )}
@@ -148,20 +156,27 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
                   maxHeight: '280px',
                   overflowY: 'auto',
                   cursor: 'pointer',
-                  paddingLeft: `${space ?? 0}px`,
                 }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}>
                 {node.employees.map(
                   person =>
                     !person.isVacancy && (
-                      <Box onClick={() => handlePersonClick(person.id)} key={person.id} sx={{ padding: '8px 24px' }}>
-                        <Typography>{person.fullName}</Typography>
-                        {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
-                          <Typography sx={{ color: '#A8A19A' }} variant="body2">
-                            {person.position}
-                          </Typography>
-                        )}
+                      <Box
+                        onClick={() => handlePersonClick(person.id)}
+                        key={person.id}
+                        sx={{
+                          paddingLeft: `${space ?? 0}px`,
+                          backgroundColor: activePersonId === person.id ? '#cfedf5' : undefined,
+                        }}>
+                        <Box sx={{ padding: '8px 24px' }}>
+                          <Typography>{person.fullName}</Typography>
+                          {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
+                            <Typography sx={{ color: '#A8A19A' }} variant="body2">
+                              {person.position}
+                            </Typography>
+                          )}
+                        </Box>
                       </Box>
                     ),
                 )}
@@ -169,7 +184,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
             </>
           )}
           {node.next.map(nextNode => (
-            <Node key={nextNode.id} node={nextNode} space={24 + (space ?? 0)} />
+            <Node key={nextNode.id} activePersonId={activePersonId} node={nextNode} space={24 + (space ?? 0)} />
           ))}
         </Box>
       )}

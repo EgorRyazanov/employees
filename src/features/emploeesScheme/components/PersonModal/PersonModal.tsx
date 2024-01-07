@@ -72,7 +72,7 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
               </Box>
               <Box>
                 <Typography sx={{ marginBottom: '16px' }}>Положение в структуре:</Typography>
-                <NodeComponent node={node} />
+                <NodeComponent activePersonId={person.id} node={node} />
               </Box>
             </Box>
           </>
