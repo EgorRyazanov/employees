@@ -25,7 +25,7 @@ const TableViewPageHeaderComponent: FC = () => {
   }, [query]);
 
   useEffect(() => {
-    dispatch(FiltersStore.actions.changePersonsFilter({ ...personsFilter }));
+    dispatch(FiltersStore.actions.changePersonsFilter({ ...personsFilter, UserFullName: search }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, dispatch]);
 
@@ -49,14 +49,14 @@ const TableViewPageHeaderComponent: FC = () => {
           ),
         }}
       />
-      {persons == null && (
+      {(persons == null || persons.total === 0) && (
         <Typography variant="body2" sx={{ color: '#A8A19A' }}>
           Ничего не найдено
         </Typography>
       )}
-      {persons != null && (
+      {persons != null && persons.total !== 0 && (
         <Typography variant="body2" sx={{ color: '#A8A19A' }}>
-          Найдено: 0
+          Найдено: {persons.total}
         </Typography>
       )}
     </Box>

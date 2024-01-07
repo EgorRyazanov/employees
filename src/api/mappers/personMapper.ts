@@ -40,8 +40,9 @@ class PersonMapper implements MapperFromDto<PersonDto, Person> {
     dto: ObjectWithMetadataDto<readonly PersonDetailsDto[]>,
   ): ObjectWithMetadata<PersonDetails[]> {
     return {
-      users: dto.users.map(person => this.fromPersonDetailsDto(person)),
+      items: dto.items.map(person => this.fromPersonDetailsDto(person)),
       page: dto.page,
+      total: dto.total,
     };
   }
 }

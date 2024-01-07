@@ -7,6 +7,7 @@ export interface PersonsFilter {
   readonly divisionName?: string;
   readonly departmentName?: string;
   readonly groupName?: string;
+  readonly UserFullName?: string;
   readonly fullName?: SortType;
   readonly userNumber?: SortType;
   readonly userPosition?: SortType;

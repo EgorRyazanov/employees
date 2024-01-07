@@ -1,4 +1,5 @@
 export interface ObjectWithMetadataDto<T> {
-  readonly users: T;
+  readonly items: T;
   readonly page: number;
+  readonly total: number;
 }

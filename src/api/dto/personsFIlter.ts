@@ -7,6 +7,7 @@ export interface PersonsFilterDto {
   readonly DivisionName?: string;
   readonly DepartmentName?: string;
   readonly GroupName?: string;
+  readonly UserFullName?: string;
   readonly FullName?: SortType;
   readonly UserNumber?: SortType;
   readonly UserPosition?: SortType;

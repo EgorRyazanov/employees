@@ -34,10 +34,10 @@ export namespace LocationsApi {
     const params = {
       LocationName: divisionOption.location,
     };
-    const { data } = await http.get<{ divisions: { name: string }[] }>(divisionsUrl, {
+    const { data } = await http.get<string[]>(divisionsUrl, {
       params: removeEmptyValues(params),
     });
 
-    return data.divisions.map(division => division.name);
+    return data;
   }
 }

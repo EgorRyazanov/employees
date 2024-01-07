@@ -9,7 +9,9 @@ import { PersonsFilter } from '../../models/personsFIlter';
 const getPersons = createAsyncThunk(`persons/get`, async (filters: PersonsFilter, { dispatch }) => {
   dispatch(actions.request());
   try {
+    console.log(123);
     const persons = await PersonApi.getPersons(filters);
+    console.log(persons);
     dispatch(actions.success(persons));
   } catch (error: unknown) {
     if (isApiError(error)) {

@@ -246,7 +246,7 @@ const PersonsViewTableComponent: FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {persons?.users.map((person, index) => (
+              {persons?.items.map((person, index) => (
                 <TableRow sx={{ ...rowStyles }} key={index}>
                   <TableCell align="center">{person.fullName}</TableCell>
                   <TableCell align="center">{person.userNumber}</TableCell>
@@ -270,14 +270,14 @@ const PersonsViewTableComponent: FC = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        {persons?.users.length === 0 && isPersonsReady && (
+        {persons?.items.length === 0 && isPersonsReady && (
           <Typography sx={{ textAlign: 'center', paddingTop: '8px' }}>Ничего не найдено</Typography>
         )}
         {persons != null && (
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
             <TablePagination
               rowsPerPageOptions={PAGE_SIZES}
-              count={123}
+              count={persons.total}
               rowsPerPage={filter.pageSize}
               page={filter.page - 1}
               onPageChange={handlePageChange}
