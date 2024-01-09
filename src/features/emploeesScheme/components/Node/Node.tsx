@@ -1,21 +1,21 @@
-import { Box, Divider, IconButton, Typography } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import GroupIcon from '@mui/icons-material/Group';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import GroupIcon from '@mui/icons-material/Group';
+import { Box, Divider, IconButton, Typography } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
 
-import { typedMemo } from '../../../../utils/typedMemo';
-import { Node as NodeType } from '../../../../models/node';
-import { TransformOptionStore } from '../../../../store/transformOptions';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { PersonStore } from '../../../../store/person';
-import { PersonModal } from '../PersonModal';
-import { Person } from '../../../../models/person';
-import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
-import { filtersSelectors } from '../../../../store/filters/selectors';
-import { NodeViews } from '../../../../models/nodeVIew';
 import { EmployeeViews } from '../../../../models/employeeViews';
+import { Node as NodeType } from '../../../../models/node';
+import { NodeViews } from '../../../../models/nodeVIew';
+import { Person } from '../../../../models/person';
+import { filtersSelectors } from '../../../../store/filters/selectors';
+import { NodeDetailsStore } from '../../../../store/nodeDetails';
+import { PersonStore } from '../../../../store/person';
+import { TransformOptionStore } from '../../../../store/transformOptions';
 import { getNodeTitle } from '../../../../utils/getNodeTitle';
+import { typedMemo } from '../../../../utils/typedMemo';
+import { PersonModal } from '../PersonModal';
 
 interface NodeComponentProps {
   node: NodeType;
@@ -30,21 +30,13 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) 
 
   const [isActive, setIsActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
-  const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
-  const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
     setIsActive(shouldShowNode || node.isDisplay);
   }, [shouldShowNode, node]);
 
   const handleMainNodeClick = (mainNode: NodeType) => {
-    setHasMainNodeModalOpen(true);
-    setActiveMainNode(mainNode);
-  };
-
-  const handleMainNodeDrop = () => {
-    setHasMainNodeModalOpen(false);
-    setActiveMainNode(activeMainNode);
+    dispatch(NodeDetailsStore.actions.setNode(mainNode));
   };
 
   const handlePersonClick = (personId: Person['id']) => {
@@ -189,9 +181,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) 
         </Box>
       )}
       {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
-      {hasMainNodeModalOpen && activeMainNode != null && (
-        <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
-      )}
+
       {node.structureEnum && <Divider sx={{ position: 'absolute', left: 0, right: 0 }} />}
     </>
   );

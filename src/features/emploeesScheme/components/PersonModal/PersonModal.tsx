@@ -1,12 +1,11 @@
-import { FC } from 'react';
-import { Box, LinearProgress, Modal, Typography } from '@mui/material';
-import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { Box, IconButton, LinearProgress, Modal, Typography } from '@mui/material';
+import { FC } from 'react';
 
-import { typedMemo } from '../../../../utils/typedMemo';
 import { useAppSelector } from '../../../../hooks';
 import { personSelectors } from '../../../../store/person/selectors';
-import { Node as NodeComponent } from '../Node';
+import { typedMemo } from '../../../../utils/typedMemo';
+import { Node } from '../Node';
 
 interface PersonModalComponentProps {
   isOpened: boolean;
@@ -72,7 +71,7 @@ const PersonModalComponent: FC<PersonModalComponentProps> = ({ isOpened, toggleM
               </Box>
               <Box>
                 <Typography sx={{ marginBottom: '16px' }}>Положение в структуре:</Typography>
-                <NodeComponent activePersonId={person.id} node={node} />
+                <Node activePersonId={person.id} node={node} />
               </Box>
             </Box>
           </>
