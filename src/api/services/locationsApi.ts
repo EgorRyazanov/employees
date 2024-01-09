@@ -33,7 +33,7 @@ export namespace LocationsApi {
   export async function getDepartments(departmentsOptions: Division & Location): Promise<string[]> {
     const params = {
       LocationName: departmentsOptions.location,
-      DivisonNames: departmentsOptions.division,
+      DivisonName: departmentsOptions.division,
     };
     const { data } = await http.get<string[]>(departmentsUrl, { params: removeEmptyValues(params) });
 
@@ -54,7 +54,7 @@ export namespace LocationsApi {
   export async function getGroups(groupOptions: Division & Location & Department): Promise<string[]> {
     const params = {
       LocationName: groupOptions.location,
-      DivisonNames: groupOptions.division,
+      DivisonName: groupOptions.division,
       DepartmentName: groupOptions.department,
     };
     const { data } = await http.get<string[]>(groupsUrl, {
@@ -69,7 +69,7 @@ export namespace LocationsApi {
   ): Promise<string[]> {
     const params = {
       LocationName: positionsOptions.location,
-      DivisonNames: positionsOptions.division,
+      DivisonName: positionsOptions.division,
       DepartmentName: positionsOptions.department,
       GroupName: positionsOptions.group,
     };

@@ -1,49 +1,42 @@
-import { Box, Divider, IconButton, Typography } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import GroupIcon from '@mui/icons-material/Groups';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import GroupIcon from '@mui/icons-material/Group';
+import { Box, Divider, IconButton, Typography } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
 
-import { typedMemo } from '../../../../utils/typedMemo';
-import { Node as NodeType } from '../../../../models/node';
-import { TransformOptionStore } from '../../../../store/transformOptions';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
-import { PersonStore } from '../../../../store/person';
-import { PersonModal } from '../PersonModal';
-import { Person } from '../../../../models/person';
-import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
-import { filtersSelectors } from '../../../../store/filters/selectors';
-import { NodeViews } from '../../../../models/nodeVIew';
 import { EmployeeViews } from '../../../../models/employeeViews';
+import { Node as NodeType } from '../../../../models/node';
+import { NodeViews } from '../../../../models/nodeVIew';
+import { Person } from '../../../../models/person';
+import { filtersSelectors } from '../../../../store/filters/selectors';
+import { NodeDetailsStore } from '../../../../store/nodeDetails';
+import { PersonStore } from '../../../../store/person';
+import { TransformOptionStore } from '../../../../store/transformOptions';
 import { getNodeTitle } from '../../../../utils/getNodeTitle';
+import { typedMemo } from '../../../../utils/typedMemo';
+import { PersonModal } from '../PersonModal';
 
 interface NodeComponentProps {
   node: NodeType;
+  activePersonId?: Person['id'];
   space?: number;
 }
 
-const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
+const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) => {
   const dispatch = useAppDispatch();
   const paramsOptions = useAppSelector(filtersSelectors.SelectOptionsParams);
   const shouldShowNode = useAppSelector(filtersSelectors.SelectShouldShowAllFields);
 
   const [isActive, setIsActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
-  const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
-  const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
     setIsActive(shouldShowNode || node.isDisplay);
   }, [shouldShowNode, node]);
 
   const handleMainNodeClick = (mainNode: NodeType) => {
-    setHasMainNodeModalOpen(true);
-    setActiveMainNode(mainNode);
-  };
-
-  const handleMainNodeDrop = () => {
-    setHasMainNodeModalOpen(false);
-    setActiveMainNode(activeMainNode);
+    dispatch(NodeDetailsStore.actions.setNode(mainNode));
   };
 
   const handlePersonClick = (personId: Person['id']) => {
@@ -82,6 +75,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
           <IconButton
             disableRipple={true}
             sx={{
+              color: '#000',
               width: '16px',
               height: '16px',
               '&:hover': {
@@ -101,7 +95,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
             cursor: 'pointer',
             marginLeft: node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0 ? 0 : '24px',
           }}>
-          <GroupIcon sx={{ color: '#A8A19A' }} />
+          <GroupIcon />
           <Box sx={{ marginBottom: '8px' }}>
             <Typography>{node.name}</Typography>
             {node.vacancyCount !== 0 && paramsOptions?.nodeViews.includes(NodeViews.Vacancies) && (
@@ -124,7 +118,6 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
                   maxHeight: '280px',
                   overflowY: 'auto',
                   cursor: 'pointer',
-                  paddingLeft: `${space ?? 0}px`,
                   backgroundColor: '#E8F5E9',
                 }}
                 onMouseEnter={handleMouseEnter}
@@ -132,13 +125,21 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
                 {node.employers.map(
                   person =>
                     !person.isVacancy && (
-                      <Box onClick={() => handlePersonClick(person.id)} key={person.id} sx={{ padding: '8px 24px' }}>
-                        <Typography>{person.fullName}</Typography>
-                        {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
-                          <Typography sx={{ color: '#A8A19A' }} variant="body2">
-                            {person.position}
-                          </Typography>
-                        )}
+                      <Box
+                        onClick={() => handlePersonClick(person.id)}
+                        key={person.id}
+                        sx={{
+                          paddingLeft: `${space ?? 0}px`,
+                          backgroundColor: activePersonId === person.id ? '#D0E0FF' : undefined,
+                        }}>
+                        <Box sx={{ padding: '8px 24px' }}>
+                          <Typography>{person.fullName}</Typography>
+                          {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
+                            <Typography sx={{ color: '#A8A19A' }} variant="body2">
+                              {person.position}
+                            </Typography>
+                          )}
+                        </Box>
                       </Box>
                     ),
                 )}
@@ -148,20 +149,27 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
                   maxHeight: '280px',
                   overflowY: 'auto',
                   cursor: 'pointer',
-                  paddingLeft: `${space ?? 0}px`,
                 }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}>
                 {node.employees.map(
                   person =>
                     !person.isVacancy && (
-                      <Box onClick={() => handlePersonClick(person.id)} key={person.id} sx={{ padding: '8px 24px' }}>
-                        <Typography>{person.fullName}</Typography>
-                        {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
-                          <Typography sx={{ color: '#A8A19A' }} variant="body2">
-                            {person.position}
-                          </Typography>
-                        )}
+                      <Box
+                        onClick={() => handlePersonClick(person.id)}
+                        key={person.id}
+                        sx={{
+                          paddingLeft: `${space ?? 0}px`,
+                          backgroundColor: activePersonId === person.id ? '#D0E0FF' : undefined,
+                        }}>
+                        <Box sx={{ padding: '8px 24px' }}>
+                          <Typography>{person.fullName}</Typography>
+                          {paramsOptions?.employeeViews.includes(EmployeeViews.Position) && (
+                            <Typography sx={{ color: '#A8A19A' }} variant="body2">
+                              {person.position}
+                            </Typography>
+                          )}
+                        </Box>
                       </Box>
                     ),
                 )}
@@ -169,14 +177,12 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space }) => {
             </>
           )}
           {node.next.map(nextNode => (
-            <Node key={nextNode.id} node={nextNode} space={24 + (space ?? 0)} />
+            <Node key={nextNode.id} activePersonId={activePersonId} node={nextNode} space={24 + (space ?? 0)} />
           ))}
         </Box>
       )}
       {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
-      {hasMainNodeModalOpen && activeMainNode != null && (
-        <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
-      )}
+
       {node.structureEnum && <Divider sx={{ position: 'absolute', left: 0, right: 0 }} />}
     </>
   );

@@ -11,6 +11,9 @@ import { Filters } from '../../components/Filters';
 import { transformOptionsSelectors } from '../../../../store/transformOptions/selectors';
 import { filtersSelectors } from '../../../../store/filters/selectors';
 import styles from './MainPage.module.scss';
+import { NodeDetailsModal } from '../../components/NodeDetailsModal/NodeDetailsModal';
+import { NodeDetailsStore } from '../../../../store/nodeDetails';
+import { nodeDetailsSelectors } from '../../../../store/nodeDetails/selectors';
 
 const NODE_SHIFT = 450;
 const NODE_PADDING = 60;
@@ -23,6 +26,11 @@ const MainPageComponent: FC = () => {
   const options = useAppSelector(transformOptionsSelectors.SelectOptions);
   const selectedLocation = useAppSelector(filtersSelectors.SelectLocation);
   const filterDisplayedLevels = useAppSelector(filtersSelectors.SelectFilterLevelDisplayed);
+  const isModalActive = useAppSelector(nodeDetailsSelectors.SelectIsModalActive);
+
+  const handleMainNodeDrop = () => {
+    dispatch(NodeDetailsStore.actions.removeNode());
+  };
 
   useEffect(() => {
     if (selectedLocation != null && filterDisplayedLevels != null) {
@@ -49,6 +57,7 @@ const MainPageComponent: FC = () => {
               nodes?.next.map((node, index) => (
                 <HeaderNode key={node.id} left={index * NODE_SHIFT + NODE_PADDING} node={node} />
               ))}
+            {isModalActive && <NodeDetailsModal isOpened={isModalActive} toggleModal={handleMainNodeDrop} />}
           </Box>
         </TransformComponent>
       </TransformWrapper>
