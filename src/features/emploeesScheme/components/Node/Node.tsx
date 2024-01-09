@@ -1,4 +1,4 @@
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from '@mui/icons-material/Groups';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Divider, IconButton, Typography } from '@mui/material';
@@ -75,6 +75,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) 
           <IconButton
             disableRipple={true}
             sx={{
+              color: '#000',
               width: '16px',
               height: '16px',
               '&:hover': {
@@ -94,7 +95,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) 
             cursor: 'pointer',
             marginLeft: node.employees.length > 0 || node.next.length > 0 || node.employers.length > 0 ? 0 : '24px',
           }}>
-          <GroupIcon sx={{ color: '#A8A19A' }} />
+          <GroupIcon />
           <Box sx={{ marginBottom: '8px' }}>
             <Typography>{node.name}</Typography>
             {node.vacancyCount !== 0 && paramsOptions?.nodeViews.includes(NodeViews.Vacancies) && (
@@ -129,7 +130,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) 
                         key={person.id}
                         sx={{
                           paddingLeft: `${space ?? 0}px`,
-                          backgroundColor: activePersonId === person.id ? '#cfedf5' : undefined,
+                          backgroundColor: activePersonId === person.id ? '#D0E0FF' : undefined,
                         }}>
                         <Box sx={{ padding: '8px 24px' }}>
                           <Typography>{person.fullName}</Typography>
@@ -159,7 +160,7 @@ const NodeComponent: FC<NodeComponentProps> = ({ node, space, activePersonId }) 
                         key={person.id}
                         sx={{
                           paddingLeft: `${space ?? 0}px`,
-                          backgroundColor: activePersonId === person.id ? '#cfedf5' : undefined,
+                          backgroundColor: activePersonId === person.id ? '#D0E0FF' : undefined,
                         }}>
                         <Box sx={{ padding: '8px 24px' }}>
                           <Typography>{person.fullName}</Typography>

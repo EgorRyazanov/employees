@@ -1,4 +1,4 @@
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from '@mui/icons-material/Groups';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, IconButton, Typography } from '@mui/material';
@@ -87,7 +87,11 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
             e.stopPropagation();
             handleBodyToggle();
           }}>
-          {isBodyActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          {isBodyActive ? (
+            <KeyboardArrowUpIcon sx={{ color: '#000' }} />
+          ) : (
+            <KeyboardArrowDownIcon sx={{ color: '#000' }} />
+          )}
         </IconButton>
       </Box>
       <Box
@@ -124,11 +128,15 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
                   },
                 }}
                 onClick={handleNextNodeToggle}>
-                {isNextNodesActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                {isNextNodesActive ? (
+                  <KeyboardArrowUpIcon sx={{ color: '#000' }} />
+                ) : (
+                  <KeyboardArrowDownIcon sx={{ color: '#000' }} />
+                )}
               </IconButton>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <GroupIcon sx={{ color: '#A8A19A' }} />
+              <GroupIcon />
               <Box>
                 <Typography>{getNodeTitle(node.structureEnum)}</Typography>
                 {node.vacancyCount !== 0 && paramsOptions?.nodeViews.includes(NodeViews.Vacancies) && (

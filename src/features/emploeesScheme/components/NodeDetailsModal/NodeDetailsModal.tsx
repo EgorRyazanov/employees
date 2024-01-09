@@ -53,8 +53,8 @@ const NodeDetailsModalComponent: FC<NodeDetailsModalComponentProps> = ({ isOpene
                 <Typography>-</Typography>
               </Box>
               <Box>
-                <Typography sx={{ marginBottom: '16px' }}>Структура подраздления:</Typography>
-                <Node key={node.id} node={node} space={32} />
+                <Typography sx={{ marginBottom: '16px' }}>Структура:</Typography>
+                <Node key={node.id} node={node} space={24} />
               </Box>
             </Box>
           </Box>
