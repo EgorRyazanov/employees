@@ -48,11 +48,13 @@ const PersonsViewTableComponent: FC = () => {
   const departments = useAppSelector(locationsSelectors.SelectDepartments);
   const groups = useAppSelector(locationsSelectors.SelectGroup);
   const userPositions = useAppSelector(locationsSelectors.SelectUserPositions);
+  const userWorkTypes = useAppSelector(locationsSelectors.SelectWorkTypes);
   const locationsStatus = useAppSelector(locationsSelectors.SelectLocationsStatus);
   const divisionsStatus = useAppSelector(locationsSelectors.SelectDivisionsStatus);
   const departmentsStatus = useAppSelector(locationsSelectors.SelectDepartmentsStatus);
   const groupsStatus = useAppSelector(locationsSelectors.SelectGroupStatus);
   const userPositionsStatus = useAppSelector(locationsSelectors.SelectUserPositionsStatus);
+  const userWorkTypesStatus = useAppSelector(locationsSelectors.SelectUserWorkTypesStatus);
 
   useEffect(() => {
     dispatch(PersonsStore.thunks.getPersons(filter));
@@ -71,7 +73,6 @@ const PersonsViewTableComponent: FC = () => {
   };
 
   const handleItemsPerPageChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    console.log(event);
     scrollToTop();
     dispatch(FiltersStore.actions.changePersonsFilter({ ...filter, pageSize: Number(event.target.value), page: 1 }));
   };
@@ -123,6 +124,25 @@ const PersonsViewTableComponent: FC = () => {
       }),
     );
   }, [dispatch, filter.locationName, filter.divisionName, filter.departmentName, filter.groupName]);
+
+  useEffect(() => {
+    dispatch(
+      LocationsStore.thunks.getUserWorkTypes({
+        location: filter.locationName,
+        division: filter.divisionName,
+        department: filter.departmentName,
+        group: filter.groupName,
+        position: filter.userPosition,
+      }),
+    );
+  }, [
+    dispatch,
+    filter.locationName,
+    filter.divisionName,
+    filter.departmentName,
+    filter.groupName,
+    filter.userPosition,
+  ]);
 
   return (
     <>
@@ -190,6 +210,8 @@ const PersonsViewTableComponent: FC = () => {
                           divisionName: undefined,
                           departmentName: undefined,
                           groupName: undefined,
+                          workType: undefined,
+                          userPosition: undefined,
                         }),
                       );
                     }}
@@ -218,6 +240,8 @@ const PersonsViewTableComponent: FC = () => {
                           divisionName: event.target.value as string,
                           departmentName: undefined,
                           groupName: undefined,
+                          workType: undefined,
+                          userPosition: undefined,
                         }),
                       );
                     }}
@@ -245,6 +269,8 @@ const PersonsViewTableComponent: FC = () => {
                           ...filter,
                           departmentName: event.target.value as string,
                           groupName: undefined,
+                          workType: undefined,
+                          userPosition: undefined,
                         }),
                       );
                     }}
@@ -271,6 +297,8 @@ const PersonsViewTableComponent: FC = () => {
                         FiltersStore.actions.changePersonsFilter({
                           ...filter,
                           groupName: event.target.value as string,
+                          workType: undefined,
+                          userPosition: undefined,
                         }),
                       );
                     }}
@@ -292,10 +320,12 @@ const PersonsViewTableComponent: FC = () => {
                     }}
                     fullWidth
                     disabled={userPositions.length === 0 || userPositionsStatus !== STATUS.success}
-                    onChange={() => {
+                    onChange={event => {
                       dispatch(
                         FiltersStore.actions.changePersonsFilter({
                           ...filter,
+                          userPosition: event.target.value as string,
+                          workType: undefined,
                         }),
                       );
                     }}
@@ -308,7 +338,32 @@ const PersonsViewTableComponent: FC = () => {
                     ))}
                   </SelectComponent>
                 </TableCell>
-                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>Тип работы</TableCell>
+                <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
+                  <SelectComponent
+                    value={filter.workType ?? ''}
+                    displayEmpty
+                    sx={{
+                      ...selectStyles,
+                    }}
+                    fullWidth
+                    disabled={userWorkTypes.length === 0 || userWorkTypesStatus !== STATUS.success}
+                    onChange={event => {
+                      dispatch(
+                        FiltersStore.actions.changePersonsFilter({
+                          ...filter,
+                          workType: event.target.value as string,
+                        }),
+                      );
+                    }}
+                    renderValue={() => 'Тип работы'}
+                    IconComponent={props => <KeyboardArrowDownIcon {...props} />}>
+                    {userWorkTypes.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </SelectComponent>
+                </TableCell>
                 <TableCell sx={{ ...headerCellStyles, width: '10%' }}>
                   <Button
                     fullWidth

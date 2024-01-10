@@ -12,7 +12,11 @@ const SelectDivisions = createSelector(root, data => data.divisions);
 
 const SelectGroup = createSelector(root, data => data.groups);
 
+const SelectWorkTypes = createSelector(root, data => data.userWorkTypes);
+
 const SelectUserPositions = createSelector(root, data => data.userPositions);
+
+const SelectUserWorkTypesStatus = createSelector(root, data => data.userWorkTypesStatus);
 
 const SelectLocationsStatus = createSelector(root, data => data.locationsStatus);
 
@@ -35,4 +39,6 @@ export const locationsSelectors = {
   SelectGroupStatus,
   SelectUserPositionsStatus,
   SelectUserPositions,
+  SelectWorkTypes,
+  SelectUserWorkTypesStatus,
 };

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { actions } from './actions';
-import { Department, Division, Group, Location, LocationsApi } from '../../api/services/locationsApi';
+import { Department, Division, Group, Location, LocationsApi, Position } from '../../api/services/locationsApi';
 import { STATUS } from '../../api/services/utils/status';
 
 const getLocations = createAsyncThunk(`auth/getLocations`, async (_, { dispatch }) => {
@@ -64,10 +64,24 @@ const getUserPositions = createAsyncThunk(
     dispatch(actions.changeUserPositionsStatus(STATUS.request));
     try {
       const userPositions = await LocationsApi.getUsersPositions(userPositionsOptions);
-      console.log(userPositions);
       dispatch(actions.getUsersPositions(userPositions));
     } catch (error: unknown) {
       dispatch(actions.changeUserPositionsStatus(STATUS.failure));
+
+      throw error;
+    }
+  },
+);
+
+const getUserWorkTypes = createAsyncThunk(
+  `auth/getUserWorkTypes`,
+  async (userWorkTypesOptions: Location & Division & Department & Group & Position, { dispatch }) => {
+    dispatch(actions.changeUserWorkTypesStatus(STATUS.request));
+    try {
+      const userWorkTypes = await LocationsApi.getUsersWorkTypes(userWorkTypesOptions);
+      dispatch(actions.getUserWorkTypes(userWorkTypes));
+    } catch (error: unknown) {
+      dispatch(actions.changeUserWorkTypesStatus(STATUS.failure));
 
       throw error;
     }
@@ -78,6 +92,7 @@ export const thunks = {
   getUserPositions,
   getLocations,
   getDepartments,
+  getUserWorkTypes,
   getDivisions,
   getGroups,
 };

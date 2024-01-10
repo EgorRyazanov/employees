@@ -43,10 +43,9 @@ const MainPageComponent: FC = () => {
       {isLoading && <LinearProgress />}
       <TransformWrapper
         initialScale={1}
-        minScale={0.5}
-        maxScale={3}
+        minScale={0.1}
         limitToBounds={false}
-        pinch={{ step: 5 }}
+        pinch={{ step: 0.2 }}
         wheel={{
           wheelDisabled: options.wheelDisapled,
         }}>
