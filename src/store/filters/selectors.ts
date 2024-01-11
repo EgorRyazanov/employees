@@ -1,8 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { TRootState } from '..';
+import { RootState } from '..';
 
-const root = (state: TRootState) => state.filters;
+const root = (state: RootState) => state.filters;
 
 const SelectLocation = createSelector(root, data => data.location);
 

@@ -8,8 +8,8 @@ export interface PersonsFilterDto {
   readonly DepartmentName?: string;
   readonly GroupName?: string;
   readonly UserFullName?: string;
+  readonly WorkType?: string;
+  readonly UserPosition?: string;
   readonly FullName?: SortType;
   readonly UserNumber?: SortType;
-  readonly UserPosition?: SortType;
-  readonly WorkType?: SortType;
 }

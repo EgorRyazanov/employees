@@ -1,6 +1,6 @@
 import { PersonsFilter } from '../../models/personsFIlter';
 import { removeEmptyValues } from '../../utils/removeEmptyValues';
-import { PersonsFilterDto } from '../dto/personsFIlter';
+import { PersonsFilterDto } from '../dto/personsFIlterDto';
 import { MapperToDto } from './mapper';
 
 class PersonsFilterMapper implements MapperToDto<PersonsFilterDto, PersonsFilter> {

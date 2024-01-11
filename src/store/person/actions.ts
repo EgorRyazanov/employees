@@ -17,4 +17,5 @@ export const actions = {
   successGettingPersonNode: createAction<Node>(`${name}/personNode/success`),
   requestGettingPersonNode: createAction(`${name}/personNode/request`),
   failureGettingPersonNode: createAction<AppError>(`${name}/personNode/failure`),
+  dropMe: createAction(`${name}/dropMe`),
 };

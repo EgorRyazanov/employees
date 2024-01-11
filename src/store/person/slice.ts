@@ -45,4 +45,8 @@ export const reducer = createReducer(initialState, builder => {
     state.statusPersonNode = STATUS.failure;
     state.errorPersonNode = error;
   });
+  builder.addCase(actions.dropMe, state => {
+    state.me = null;
+    state.statusMe = STATUS.initial;
+  });
 });

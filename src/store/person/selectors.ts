@@ -1,9 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import { STATUS } from '../../api/services/utils/status';
-import { TRootState } from '..';
+import { RootState } from '..';
 
-const root = (state: TRootState) => state.person;
+const root = (state: RootState) => state.person;
 
 const SelectIsMeLoading = createSelector(root, data => data.statusMe === STATUS.request);
 

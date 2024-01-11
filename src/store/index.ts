@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
 import { LoginStore } from './auth';
 import { PersonStore } from './person';
 import { NodesStore } from './node';
@@ -19,14 +20,19 @@ const rootReducer = combineReducers({
   nodeDetails: NodeDetailsStore.reducer,
 });
 
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
-  devTools: true,
-});
+export type RootState = ReturnType<typeof rootReducer>;
+export type RootDispatch = typeof store.dispatch;
 
-export type TRootState = ReturnType<typeof rootReducer>;
-export type TRootDispatch = typeof store.dispatch;
+export function initStore() {
+  return configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+    devTools: true,
+  });
+}
+
+export type Store = ReturnType<typeof initStore>;
+export const store = initStore();
