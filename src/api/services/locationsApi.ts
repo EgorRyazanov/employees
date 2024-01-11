@@ -17,12 +17,17 @@ export type Group = {
   readonly group?: string;
 };
 
+export type Position = {
+  readonly position?: string;
+};
+
 export namespace LocationsApi {
   const locationsUrl = 'api/employee/locations-names';
   const departmentsUrl = 'api/employee/departments-names';
   const divisionsUrl = 'api/employee/divisions-names';
   const groupsUrl = 'api/employee/groups-names';
   const userPositionsUrl = 'api/employee/users-positions';
+  const userWorkTypesUrl = 'api/employee/users-worktypes';
 
   export async function getLocations(): Promise<string[]> {
     const { data } = await http.get<string[]>(locationsUrl);
@@ -33,7 +38,7 @@ export namespace LocationsApi {
   export async function getDepartments(departmentsOptions: Division & Location): Promise<string[]> {
     const params = {
       LocationName: departmentsOptions.location,
-      DivisonNames: departmentsOptions.division,
+      DivisonName: departmentsOptions.division,
     };
     const { data } = await http.get<string[]>(departmentsUrl, { params: removeEmptyValues(params) });
 
@@ -54,7 +59,7 @@ export namespace LocationsApi {
   export async function getGroups(groupOptions: Division & Location & Department): Promise<string[]> {
     const params = {
       LocationName: groupOptions.location,
-      DivisonNames: groupOptions.division,
+      DivisonName: groupOptions.division,
       DepartmentName: groupOptions.department,
     };
     const { data } = await http.get<string[]>(groupsUrl, {
@@ -69,11 +74,28 @@ export namespace LocationsApi {
   ): Promise<string[]> {
     const params = {
       LocationName: positionsOptions.location,
-      DivisonNames: positionsOptions.division,
+      DivisonName: positionsOptions.division,
       DepartmentName: positionsOptions.department,
       GroupName: positionsOptions.group,
     };
     const { data } = await http.get<string[]>(userPositionsUrl, {
+      params: removeEmptyValues(params),
+    });
+
+    return data;
+  }
+
+  export async function getUsersWorkTypes(
+    workTypesOptions: Division & Location & Department & Group & Position,
+  ): Promise<string[]> {
+    const params = {
+      LocationName: workTypesOptions.location,
+      DivisonName: workTypesOptions.division,
+      DepartmentName: workTypesOptions.department,
+      GroupName: workTypesOptions.group,
+      PositionName: workTypesOptions.position,
+    };
+    const { data } = await http.get<string[]>(userWorkTypesUrl, {
       params: removeEmptyValues(params),
     });
 

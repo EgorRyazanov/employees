@@ -8,8 +8,8 @@ export interface PersonsFilter {
   readonly departmentName?: string;
   readonly groupName?: string;
   readonly userFullName?: string;
+  readonly userPosition?: string;
+  readonly workType?: string;
   readonly fullName?: SortType;
   readonly userNumber?: SortType;
-  readonly userPosition?: SortType;
-  readonly workType?: SortType;
 }

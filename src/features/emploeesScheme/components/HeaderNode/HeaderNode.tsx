@@ -1,4 +1,4 @@
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from '@mui/icons-material/Groups';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, IconButton, Typography } from '@mui/material';
@@ -10,12 +10,12 @@ import { Node as NodeType } from '../../../../models/node';
 import { NodeViews } from '../../../../models/nodeVIew';
 import { Person } from '../../../../models/person';
 import { filtersSelectors } from '../../../../store/filters/selectors';
+import { NodeDetailsStore } from '../../../../store/nodeDetails';
 import { PersonStore } from '../../../../store/person';
 import { TransformOptionStore } from '../../../../store/transformOptions';
 import { getNodeTitle } from '../../../../utils/getNodeTitle';
 import { typedMemo } from '../../../../utils/typedMemo';
 import { Node } from '../Node';
-import { NodeDetailsModal } from '../NodeDetailsModal/NodeDetailsModal';
 import { PersonModal } from '../PersonModal';
 import styles from './HeaderNode.module.scss';
 
@@ -32,8 +32,6 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   const [isBodyActive, setIsBodyActive] = useState(node.isDisplay);
   const [isNextNodesActive, setIsNextNodesActive] = useState(node.isDisplay);
   const [hasPersonModalOpen, setHasPersonModalOpen] = useState(false);
-  const [hasMainNodeModalOpen, setHasMainNodeModalOpen] = useState(false);
-  const [activeMainNode, setActiveMainNode] = useState<NodeType | null>(null);
 
   useEffect(() => {
     setIsBodyActive(shouldShowNode || node.isDisplay);
@@ -51,13 +49,7 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
   };
 
   const handleMainNodeClick = (mainNode: NodeType) => {
-    setHasMainNodeModalOpen(true);
-    setActiveMainNode(mainNode);
-  };
-
-  const handleMainNodeDrop = () => {
-    setHasMainNodeModalOpen(false);
-    setActiveMainNode(activeMainNode);
+    dispatch(NodeDetailsStore.actions.setNode(mainNode));
   };
 
   const handleBodyToggle = () => {
@@ -95,7 +87,11 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
             e.stopPropagation();
             handleBodyToggle();
           }}>
-          {isBodyActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          {isBodyActive ? (
+            <KeyboardArrowUpIcon sx={{ color: '#000' }} />
+          ) : (
+            <KeyboardArrowDownIcon sx={{ color: '#000' }} />
+          )}
         </IconButton>
       </Box>
       <Box
@@ -132,11 +128,15 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
                   },
                 }}
                 onClick={handleNextNodeToggle}>
-                {isNextNodesActive ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                {isNextNodesActive ? (
+                  <KeyboardArrowUpIcon sx={{ color: '#000' }} />
+                ) : (
+                  <KeyboardArrowDownIcon sx={{ color: '#000' }} />
+                )}
               </IconButton>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <GroupIcon sx={{ color: '#A8A19A' }} />
+              <GroupIcon />
               <Box>
                 <Typography>{getNodeTitle(node.structureEnum)}</Typography>
                 {node.vacancyCount !== 0 && paramsOptions?.nodeViews.includes(NodeViews.Vacancies) && (
@@ -200,9 +200,6 @@ const HeaderNodeComponent: FC<NodeComponentProps> = ({ node, left }) => {
           )}
           {hasPersonModalOpen && <PersonModal isOpened={hasPersonModalOpen} toggleModal={handleDropPerson} />}
         </>
-      )}
-      {hasMainNodeModalOpen && activeMainNode != null && (
-        <NodeDetailsModal isOpened={hasMainNodeModalOpen} node={activeMainNode} toggleModal={handleMainNodeDrop} />
       )}
     </div>
   );

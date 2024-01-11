@@ -10,10 +10,16 @@ import { PersonStore } from './store/person';
 import { AuthGuard } from './utils/guards/AuthGuard';
 import { NonAuthGuard } from './utils/guards/nonAuthGuard';
 import { RoutePaths } from './utils/routePaths';
+import { setupInterceptors } from './api/http';
+import { store } from './store';
 import '/src/theme/index.scss';
 
 export const App: FC = () => {
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    setupInterceptors(store);
+  }, []);
 
   useEffect(() => {
     dispatch(PersonStore.thunks.getMe());
