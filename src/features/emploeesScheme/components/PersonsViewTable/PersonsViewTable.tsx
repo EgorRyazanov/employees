@@ -382,7 +382,7 @@ const PersonsViewTableComponent: FC = () => {
             <TableBody>
               {persons?.items.map((person, index) => (
                 <TableRow sx={{ ...rowStyles }} key={index}>
-                  <TableCell align="center">{person.fullName}</TableCell>
+                  <TableCell align="center">{person.fullName === '' ? 'Вакансия' : person.fullName}</TableCell>
                   <TableCell align="center">{person.userNumber}</TableCell>
                   <TableCell align="center">{person.legalEntity}</TableCell>
                   <TableCell align="center">{person.location !== '' ? person.location : 'Не указано'}</TableCell>
