@@ -11,7 +11,7 @@ import {
   InputAdornment,
   Typography,
 } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 import { CheckBoxComponent, TextFieldComponent } from '../../../../components';
 import { typedMemo } from '../../../../utils/typedMemo';
@@ -52,9 +52,9 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
     }
   }, [appliedLocation, action, dispatch]);
 
-  const handleClickToggleSelect = () => {
+  const handleClickToggleSelect = useCallback(() => {
     setIsSelectVisible(!isSelectVisible);
-  };
+  }, [isSelectVisible]);
 
   const handleSubmit = () => {
     dispatch(FiltersStore.actions.changeOptionsParams(options));
@@ -88,8 +88,21 @@ const ParamsOptionsMultiSelectComponent: FC<ParamsOptionsMultiSelectComponentPro
     }
   };
 
+  const closeSelect = useCallback(() => {
+    if (isSelectVisible) {
+      handleClickToggleSelect();
+    }
+  }, [handleClickToggleSelect, isSelectVisible]);
+
+  useEffect(() => {
+    window.addEventListener('click', closeSelect);
+    return () => {
+      window.removeEventListener('click', closeSelect);
+    };
+  }, [closeSelect]);
+
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box onClick={event => event.stopPropagation()} sx={{ position: 'relative' }}>
       <TextFieldComponent
         fullWidth
         placeholder="Параметры отображения"
